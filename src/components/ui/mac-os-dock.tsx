@@ -72,13 +72,19 @@ export const MacOSDock: React.FC<MacOSDockProps> = ({
     }
   }, []);
 
-  const [config, setConfig] = useState(getResponsiveConfig);
+  const [config, setConfig] = useState({
+    baseIconSize: 56,
+    maxScale: 1.65,
+    effectWidth: 280
+  });
   const { baseIconSize, maxScale, effectWidth } = config;
   const minScale = 1.0;
   const baseSpacing = Math.max(4, baseIconSize * 0.12);
 
-  // Update config on window resize
+  // Update config on mount and window resize
   useEffect(() => {
+    setConfig(getResponsiveConfig());
+
     const handleResize = () => {
       setConfig(getResponsiveConfig());
     };
@@ -226,6 +232,7 @@ export const MacOSDock: React.FC<MacOSDockProps> = ({
   return (
     <div 
       ref={dockRef}
+      suppressHydrationWarning
       className={`backdrop-blur-xl ${className}`}
       style={{
         width: `${contentWidth + padding * 2}px`,
