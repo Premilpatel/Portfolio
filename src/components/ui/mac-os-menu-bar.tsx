@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
+  Settings,
   Wifi, 
   Battery, 
   Search, 
@@ -183,9 +184,9 @@ export const MacOSMenuBar: React.FC<MacOSMenuBarProps> = ({
                 ? (isDarkMode ? 'bg-white/20' : 'bg-black/10') 
                 : (isDarkMode ? 'hover:bg-white/15' : 'hover:bg-black/10')
             }`}
-            title="Apple"
+            title="Settings"
           >
-            <span className="text-sm font-semibold"></span>
+            <Settings className="w-3.5 h-3.5 inline-block" />
           </button>
 
           {activeMenu === 'apple' && (

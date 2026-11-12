@@ -12,6 +12,8 @@ interface StickyNoteProps {
   onOpenPhotos: () => void;
   isOpen?: boolean;
   onClose?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 export const StickyNote: React.FC<StickyNoteProps> = ({
@@ -22,7 +24,9 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
   onOpenNotion,
   onOpenPhotos,
   isOpen = true,
-  onClose
+  onClose,
+  zIndex = 15,
+  onFocus
 }) => {
   const [position, setPosition] = useState({ x: 45, y: 70 });
   const [isDragging, setIsDragging] = useState(false);
@@ -74,9 +78,12 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
   return (
     <div
       ref={noteRef}
+      onMouseDown={() => {
+        if (onFocus) onFocus();
+      }}
       style={{
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-        zIndex: 40
+        zIndex: zIndex
       }}
       className={`fixed top-0 left-0 w-76 sm:w-80 select-none transition-shadow duration-200 ${
         isDragging ? 'shadow-2xl cursor-grabbing scale-[1.01]' : 'shadow-xl'

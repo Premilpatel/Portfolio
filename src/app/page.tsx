@@ -72,11 +72,6 @@ const DOCK_APPS: DockApp[] = [
     icon: '/icons/gmail.png'
   },
   {
-    id: 'gdrive',
-    name: 'Google Drive',
-    icon: '/icons/gdrive.png'
-  },
-  {
     id: 'trash',
     name: 'Trash',
     icon: '/icons/trash.png'
@@ -95,7 +90,8 @@ export default function Home() {
     trash: { id: 'trash', isOpen: false, isMinimized: false, zIndex: 17 },
   });
 
-  const [topZIndex, setTopZIndex] = useState(25);
+  const [topZIndex, setTopZIndex] = useState(30);
+  const [stickyZIndex, setStickyZIndex] = useState(15);
   const [activeAppName, setActiveAppName] = useState<string>('Finder');
   const [finderFolder, setFinderFolder] = useState<string>('root');
   const [aboutMacOpen, setAboutMacOpen] = useState(false);
@@ -110,15 +106,18 @@ export default function Home() {
 
   // Bring window to focus
   const focusWindow = (appId: string) => {
-    setTopZIndex(prev => prev + 1);
-    setWindows(prev => ({
-      ...prev,
-      [appId]: {
-        ...(prev[appId] || { id: appId, isOpen: true, isMinimized: false }),
-        isMinimized: false,
-        zIndex: topZIndex + 1
-      }
-    }));
+    setTopZIndex(prev => {
+      const nextZ = Math.max(prev, stickyZIndex) + 1;
+      setWindows(w => ({
+        ...w,
+        [appId]: {
+          ...(w[appId] || { id: appId, isOpen: true, isMinimized: false }),
+          isMinimized: false,
+          zIndex: nextZ
+        }
+      }));
+      return nextZ;
+    });
 
     const appTitles: Record<string, string> = {
       finder: 'Finder',
@@ -159,23 +158,26 @@ export default function Home() {
       return;
     }
 
+    const nextZ = Math.max(topZIndex, stickyZIndex) + 1;
+    setTopZIndex(nextZ);
+
     setWindows(prev => {
       const current = prev[appId];
       if (!current || !current.isOpen) {
         return {
           ...prev,
-          [appId]: { id: appId, isOpen: true, isMinimized: false, zIndex: topZIndex + 1 }
+          [appId]: { id: appId, isOpen: true, isMinimized: false, zIndex: nextZ }
         };
       }
       if (current.isMinimized) {
         return {
           ...prev,
-          [appId]: { ...current, isMinimized: false, zIndex: topZIndex + 1 }
+          [appId]: { ...current, isMinimized: false, zIndex: nextZ }
         };
       }
       return {
         ...prev,
-        [appId]: { ...current, zIndex: topZIndex + 1 }
+        [appId]: { ...current, zIndex: nextZ }
       };
     });
 
@@ -301,6 +303,14 @@ export default function Home() {
       <StickyNote
         isOpen={stickyOpen}
         onClose={() => setStickyOpen(false)}
+        zIndex={stickyZIndex}
+        onFocus={() => {
+          setTopZIndex(prev => {
+            const nextZ = prev + 1;
+            setStickyZIndex(nextZ);
+            return nextZ;
+          });
+        }}
         onOpenResume={() => openApp('resume')}
         onOpenProjects={() => {
           setFinderFolder('Projects');
@@ -324,7 +334,7 @@ export default function Home() {
         isOpen={windows.finder?.isOpen}
         isMinimized={windows.finder?.isMinimized}
         zIndex={windows.finder?.zIndex || 10}
-        initialPosition={{ x: 70, y: 55 }}
+        initialPosition={{ x: 260, y: 55 }}
         initialSize={{ width: 840, height: 530 }}
         onClose={() => closeWindow('finder')}
         onMinimize={() => minimizeWindow('finder')}
@@ -353,7 +363,7 @@ export default function Home() {
         isOpen={windows.resume?.isOpen}
         isMinimized={windows.resume?.isMinimized}
         zIndex={windows.resume?.zIndex || 11}
-        initialPosition={{ x: 120, y: 35 }}
+        initialPosition={{ x: 200, y: 35 }}
         initialSize={{ width: 840, height: 860 }}
         onClose={() => closeWindow('resume')}
         onMinimize={() => minimizeWindow('resume')}
@@ -371,7 +381,7 @@ export default function Home() {
         isOpen={windows.gallery?.isOpen}
         isMinimized={windows.gallery?.isMinimized}
         zIndex={windows.gallery?.zIndex || 12}
-        initialPosition={{ x: 140, y: 75 }}
+        initialPosition={{ x: 250, y: 70 }}
         initialSize={{ width: 860, height: 550 }}
         onClose={() => closeWindow('gallery')}
         onMinimize={() => minimizeWindow('gallery')}
@@ -389,7 +399,7 @@ export default function Home() {
         isOpen={windows.safari?.isOpen}
         isMinimized={windows.safari?.isMinimized}
         zIndex={windows.safari?.zIndex || 13}
-        initialPosition={{ x: 110, y: 65 }}
+        initialPosition={{ x: 240, y: 60 }}
         initialSize={{ width: 850, height: 540 }}
         onClose={() => closeWindow('safari')}
         onMinimize={() => minimizeWindow('safari')}
