@@ -71,12 +71,12 @@ export const ResumeViewer: React.FC = () => {
       {/* PDF Viewport rendering the exact original resume */}
       <div className="flex-1 w-full h-full bg-[#525659] relative overflow-hidden">
         <object
-          data="/Premil_Patel_Resume.pdf#toolbar=1&navpanes=0&view=FitH"
+          data="/Premil_Patel_Resume.pdf#toolbar=1&navpanes=0&view=Fit"
           type="application/pdf"
           className="w-full h-full border-none"
         >
           <iframe
-            src="/Premil_Patel_Resume.pdf#toolbar=1&navpanes=0&view=FitH"
+            src="/Premil_Patel_Resume.pdf#toolbar=1&navpanes=0&view=Fit"
             className="w-full h-full border-none"
             title="Premil Patel Official Resume"
           >

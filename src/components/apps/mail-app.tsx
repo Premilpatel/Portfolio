@@ -55,14 +55,12 @@ export const MailApp: React.FC = () => {
         </div>
 
         {submitted ? (
-          <div className="p-8 text-center space-y-3 bg-white/5 rounded-2xl border border-white/10 my-8">
+          <div className="py-12 px-6 text-center space-y-3 bg-white/5 rounded-2xl border border-white/10 my-8">
             <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
               <Check className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-bold text-white">Thank you!</h3>
-            <p className="text-xs text-neutral-300 max-w-sm mx-auto leading-relaxed">
-              Your default email client was opened. You can also directly email Premil at <span className="text-red-400 font-semibold">patelpremil70@gmail.com</span> or call <span className="text-neutral-200 font-semibold">224-477-3511</span>.
-            </p>
+            <h3 className="text-base font-bold text-white">Message sent!</h3>
+            <p className="text-xs text-neutral-300">Thank you for reaching out.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3 text-xs">

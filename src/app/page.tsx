@@ -15,6 +15,8 @@ import NotesApp from '@/components/apps/notes-app';
 import MailApp from '@/components/apps/mail-app';
 import ResumeViewer from '@/components/apps/resume-viewer';
 import AboutMacModal from '@/components/apps/about-mac-modal';
+import TrashApp from '@/components/apps/trash-app';
+import StickyNote from '@/components/desktop/sticky-note';
 
 interface WindowState {
   id: string;
@@ -30,14 +32,29 @@ const DOCK_APPS: DockApp[] = [
     icon: 'https://cdn.21st.dev/assets/mirror/99/9963f31f43cd77b0c28981ba7bac04db749a5749019f554d1afb75225a3e9151.png'
   },
   {
+    id: 'resume',
+    name: 'Resume',
+    icon: '/icons/mac-pdf.png'
+  },
+  {
     id: 'projects',
     name: 'Projects',
     icon: '/icons/projects-folder.png'
   },
   {
-    id: 'resume',
-    name: 'Resume',
-    icon: '/icons/mac-pdf.png'
+    id: 'linkedin',
+    name: 'LinkedIn',
+    icon: '/icons/linkedin.png'
+  },
+  {
+    id: 'github',
+    name: 'GitHub',
+    icon: '/icons/github-mac.png'
+  },
+  {
+    id: 'notion',
+    name: 'Notion',
+    icon: '/icons/notion.png'
   },
   {
     id: 'safari',
@@ -50,16 +67,6 @@ const DOCK_APPS: DockApp[] = [
     icon: 'https://cdn.21st.dev/assets/mirror/45/45c61147b702b2765802969df55878aa5f69e27abe656174339dc661d0f9a31d.png'
   },
   {
-    id: 'notion',
-    name: 'Notion',
-    icon: '/icons/notion.png'
-  },
-  {
-    id: 'linkedin',
-    name: 'LinkedIn',
-    icon: '/icons/linkedin.png'
-  },
-  {
     id: 'gmail',
     name: 'Gmail',
     icon: '/icons/gmail.png'
@@ -70,9 +77,9 @@ const DOCK_APPS: DockApp[] = [
     icon: '/icons/gdrive.png'
   },
   {
-    id: 'github',
-    name: 'GitHub',
-    icon: '/icons/github-mac.png'
+    id: 'trash',
+    name: 'Trash',
+    icon: '/icons/trash.png'
   }
 ];
 
@@ -85,12 +92,14 @@ export default function Home() {
     notes: { id: 'notes', isOpen: false, isMinimized: false, zIndex: 14 },
     mail: { id: 'mail', isOpen: false, isMinimized: false, zIndex: 15 },
     gdrive: { id: 'gdrive', isOpen: false, isMinimized: false, zIndex: 16 },
+    trash: { id: 'trash', isOpen: false, isMinimized: false, zIndex: 17 },
   });
 
   const [topZIndex, setTopZIndex] = useState(25);
   const [activeAppName, setActiveAppName] = useState<string>('Finder');
   const [finderFolder, setFinderFolder] = useState<string>('root');
   const [aboutMacOpen, setAboutMacOpen] = useState(false);
+  const [stickyOpen, setStickyOpen] = useState(true);
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [spotlightSearch, setSpotlightSearch] = useState('');
   const [previewImage, setPreviewImage] = useState<{ src: string; title: string } | null>(null);
@@ -118,7 +127,8 @@ export default function Home() {
       safari: 'Safari',
       notes: 'Notes',
       mail: 'Gmail',
-      gdrive: 'Google Drive'
+      gdrive: 'Google Drive',
+      trash: 'Trash'
     };
     if (appTitles[appId]) {
       setActiveAppName(appTitles[appId]);
@@ -140,7 +150,7 @@ export default function Home() {
       return;
     }
     if (appId === 'notion') {
-      openApp('notes');
+      window.open('https://app.notion.com/p/Detection-Monitoring-Homelab-Writeup-2f8ee3aaf9948016a8f1fcdd386f39f2', '_blank');
       return;
     }
     if (appId === 'projects') {
@@ -287,6 +297,25 @@ export default function Home() {
         isDarkMode={isDarkMode}
       />
 
+      {/* Desktop Sticky Note Quick Links */}
+      <StickyNote
+        isOpen={stickyOpen}
+        onClose={() => setStickyOpen(false)}
+        onOpenResume={() => openApp('resume')}
+        onOpenProjects={() => {
+          setFinderFolder('Projects');
+          openApp('finder');
+        }}
+        onOpenCourses={() => {
+          setFinderFolder('Courses');
+          openApp('finder');
+        }}
+        onOpenDiagram={() => setPreviewImage({ src: '/homelab-architecture.jpg', title: 'Homelab_Architecture.jpg' })}
+        onOpenNotion={() => window.open('https://app.notion.com/p/Detection-Monitoring-Homelab-Writeup-2f8ee3aaf9948016a8f1fcdd386f39f2', '_blank')}
+        onOpenSafari={() => openApp('safari')}
+        onOpenMail={() => openApp('mail')}
+      />
+
       {/* Windows Area */}
       {/* 1. Finder Window */}
       <MacWindow
@@ -321,12 +350,12 @@ export default function Home() {
       <MacWindow
         id="resume"
         title="Premil_Patel_Resume.pdf — Preview"
-        icon="/icons/resume-folder.svg"
+        icon="/icons/mac-pdf.png"
         isOpen={windows.resume?.isOpen}
         isMinimized={windows.resume?.isMinimized}
         zIndex={windows.resume?.zIndex || 11}
-        initialPosition={{ x: 120, y: 60 }}
-        initialSize={{ width: 860, height: 580 }}
+        initialPosition={{ x: 120, y: 35 }}
+        initialSize={{ width: 840, height: 860 }}
         onClose={() => closeWindow('resume')}
         onMinimize={() => minimizeWindow('resume')}
         onFocus={() => focusWindow('resume')}
@@ -440,6 +469,24 @@ export default function Home() {
             View Premil_Patel_Resume.pdf
           </button>
         </div>
+      </MacWindow>
+
+      {/* 8. Trash Window */}
+      <MacWindow
+        id="trash"
+        title="Trash"
+        icon="/icons/trash.png"
+        isOpen={windows.trash?.isOpen}
+        isMinimized={windows.trash?.isMinimized}
+        zIndex={windows.trash?.zIndex || 17}
+        initialPosition={{ x: 220, y: 110 }}
+        initialSize={{ width: 620, height: 420 }}
+        onClose={() => closeWindow('trash')}
+        onMinimize={() => minimizeWindow('trash')}
+        onFocus={() => focusWindow('trash')}
+        isDarkMode={isDarkMode}
+      >
+        <TrashApp />
       </MacWindow>
 
       {/* Image Preview / Quick Look Window */}
