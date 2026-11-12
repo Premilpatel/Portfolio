@@ -66,15 +66,6 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
 
   if (!isOpen) return null;
 
-  const links = [
-    { label: 'Resume (PDF)', action: onOpenResume, external: false },
-    { label: 'Projects', action: onOpenProjects, external: false },
-    { label: 'Courses', action: onOpenCourses, external: false },
-    { label: 'Homelab Architecture', action: onOpenDiagram, external: false },
-    { label: 'Homelab Notion Writeup', action: onOpenNotion, external: true },
-    { label: 'Photo Gallery', action: onOpenPhotos, external: false }
-  ];
-
   return (
     <div
       ref={noteRef}
@@ -131,21 +122,83 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
         {/* Note Body: Only Bullet Points with Hyperlinks */}
         {!isCollapsed && (
           <div className="p-4 sm:p-5 bg-gradient-to-b from-[#fef08a] to-[#fef9c3]">
-            <ul className="space-y-3 text-[13px]">
-              {links.map((link) => (
-                <li key={link.label} className="flex items-center space-x-2.5">
+            <ul className="space-y-2.5 text-[13px]">
+              {/* 1. Resume */}
+              <li className="flex items-center space-x-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 shrink-0" />
+                <button
+                  onClick={onOpenResume}
+                  className="text-neutral-900 font-medium hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                >
+                  Resume (PDF)
+                </button>
+              </li>
+
+              {/* 2. Projects & Sub-bullets */}
+              <li>
+                <div className="flex items-center space-x-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 shrink-0" />
                   <button
-                    onClick={link.action}
-                    className="text-neutral-900 font-medium hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left flex items-center gap-1.5 group cursor-pointer"
+                    onClick={onOpenProjects}
+                    className="text-neutral-900 font-medium hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
                   >
-                    <span>{link.label}</span>
-                    {link.external && (
-                      <ExternalLink className="w-3.5 h-3.5 text-neutral-500 group-hover:text-blue-700 opacity-70 group-hover:opacity-100" />
-                    )}
+                    Projects
                   </button>
-                </li>
-              ))}
+                </div>
+
+                {/* Sub-bullets under Projects */}
+                <ul className="ml-4 mt-2 space-y-2 border-l border-neutral-800/20 pl-3 text-[12.5px]">
+                  <li className="flex items-center space-x-2">
+                    <span className="w-1 h-1 rounded-full bg-neutral-700 shrink-0" />
+                    <button
+                      onClick={onOpenDiagram}
+                      className="text-neutral-800 hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                    >
+                      Homelab Architecture
+                    </button>
+                  </li>
+
+                  <li className="flex items-center space-x-2">
+                    <span className="w-1 h-1 rounded-full bg-neutral-700 shrink-0" />
+                    <button
+                      onClick={onOpenNotion}
+                      className="text-neutral-800 hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left flex items-center gap-1 group cursor-pointer"
+                    >
+                      <span>Homelab Notion Writeup</span>
+                      <ExternalLink className="w-3 h-3 text-neutral-500 group-hover:text-blue-700 opacity-70 group-hover:opacity-100" />
+                    </button>
+                  </li>
+
+                  <li className="flex items-center space-x-2">
+                    <span className="w-1 h-1 rounded-full bg-neutral-700 shrink-0" />
+                    <span className="text-neutral-600 cursor-default select-none">
+                      CTFs
+                    </span>
+                  </li>
+                </ul>
+              </li>
+
+              {/* 3. Courses */}
+              <li className="flex items-center space-x-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 shrink-0" />
+                <button
+                  onClick={onOpenCourses}
+                  className="text-neutral-900 font-medium hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                >
+                  Courses
+                </button>
+              </li>
+
+              {/* 4. Photo Gallery */}
+              <li className="flex items-center space-x-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 shrink-0" />
+                <button
+                  onClick={onOpenPhotos}
+                  className="text-neutral-900 font-medium hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                >
+                  Photo Gallery
+                </button>
+              </li>
             </ul>
           </div>
         )}
