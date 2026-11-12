@@ -2,11 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Premil Patel — macOS Portfolio",
-  description: "Interactive macOS Yosemite portfolio experience by Premil Patel featuring an authentic dock, finder file browser, gallery, terminal, and projects showcase.",
-  icons: {
-    icon: "/favicon.ico",
-  }
+  title: "Premil Patel's Screen",
+  description: "Premil Patel's Desktop Screen",
 };
 
 export default function RootLayout({

@@ -14,7 +14,6 @@ import NotesApp from '@/components/apps/notes-app';
 import MailApp from '@/components/apps/mail-app';
 import ResumeViewer from '@/components/apps/resume-viewer';
 import AboutMacModal from '@/components/apps/about-mac-modal';
-import { HardDrive, Cloud, ExternalLink } from 'lucide-react';
 
 interface WindowState {
   id: string;
@@ -33,6 +32,11 @@ const DOCK_APPS: DockApp[] = [
     id: 'projects',
     name: 'Projects',
     icon: '/icons/projects-folder.png'
+  },
+  {
+    id: 'resume',
+    name: 'Resume',
+    icon: '/icons/resume-folder.svg'
   },
   {
     id: 'safari',
@@ -94,6 +98,10 @@ export default function Home() {
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [spotlightSearch, setSpotlightSearch] = useState('');
 
+  // Brightness and Theme state
+  const [brightness, setBrightness] = useState<number>(100);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+
   // Bring window to focus
   const focusWindow = (appId: string) => {
     setTopZIndex(prev => prev + 1);
@@ -135,7 +143,6 @@ export default function Home() {
       return;
     }
     if (appId === 'notion') {
-      // Open notes app with the homelab note selected or open Notion
       openApp('notes');
       return;
     }
@@ -245,20 +252,30 @@ export default function Home() {
 
   return (
     <main 
-      className="relative w-screen h-screen overflow-hidden select-none"
+      className="relative w-screen h-screen overflow-hidden select-none transition-all duration-300"
       style={{
         backgroundImage: `url('/yosemite.jpg'), url('/yosemite_sunset.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundRepeat: 'no-repeat',
+        filter: brightness < 100 ? `brightness(${brightness}%)` : undefined
       }}
     >
-      <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+      {/* Dim / Theme Tint overlay */}
+      <div 
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
+          isDarkMode ? 'bg-black/15' : 'bg-white/10'
+        }`} 
+      />
 
       {/* Top macOS Menu Bar */}
       <MacOSMenuBar
         appName={activeAppName}
         onMenuAction={handleMenuAction}
+        brightness={brightness}
+        onBrightnessChange={setBrightness}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode(prev => !prev)}
       />
 
       {/* Desktop Clickable Icons */}
@@ -269,6 +286,7 @@ export default function Home() {
           openApp('finder');
         }}
         onOpenResume={() => openApp('resume')}
+        isDarkMode={isDarkMode}
       />
 
       {/* Windows Area */}
@@ -285,6 +303,7 @@ export default function Home() {
         onClose={() => closeWindow('finder')}
         onMinimize={() => minimizeWindow('finder')}
         onFocus={() => focusWindow('finder')}
+        isDarkMode={isDarkMode}
       >
         <FinderApp
           initialFolder={finderFolder}
@@ -304,7 +323,7 @@ export default function Home() {
       <MacWindow
         id="resume"
         title="Premil_Patel_Resume.pdf — Preview"
-        icon="/icons/projects-folder.png"
+        icon="/icons/resume-folder.svg"
         isOpen={windows.resume?.isOpen}
         isMinimized={windows.resume?.isMinimized}
         zIndex={windows.resume?.zIndex || 11}
@@ -313,6 +332,7 @@ export default function Home() {
         onClose={() => closeWindow('resume')}
         onMinimize={() => minimizeWindow('resume')}
         onFocus={() => focusWindow('resume')}
+        isDarkMode={isDarkMode}
       >
         <ResumeViewer />
       </MacWindow>
@@ -330,6 +350,7 @@ export default function Home() {
         onClose={() => closeWindow('gallery')}
         onMinimize={() => minimizeWindow('gallery')}
         onFocus={() => focusWindow('gallery')}
+        isDarkMode={isDarkMode}
       >
         <GalleryApp />
       </MacWindow>
@@ -347,6 +368,7 @@ export default function Home() {
         onClose={() => closeWindow('safari')}
         onMinimize={() => minimizeWindow('safari')}
         onFocus={() => focusWindow('safari')}
+        isDarkMode={isDarkMode}
       >
         <SafariApp />
       </MacWindow>
@@ -364,6 +386,7 @@ export default function Home() {
         onClose={() => closeWindow('notes')}
         onMinimize={() => minimizeWindow('notes')}
         onFocus={() => focusWindow('notes')}
+        isDarkMode={isDarkMode}
       >
         <NotesApp />
       </MacWindow>
@@ -381,6 +404,7 @@ export default function Home() {
         onClose={() => closeWindow('mail')}
         onMinimize={() => minimizeWindow('mail')}
         onFocus={() => focusWindow('mail')}
+        isDarkMode={isDarkMode}
       >
         <MailApp />
       </MacWindow>
@@ -398,6 +422,7 @@ export default function Home() {
         onClose={() => closeWindow('gdrive')}
         onMinimize={() => minimizeWindow('gdrive')}
         onFocus={() => focusWindow('gdrive')}
+        isDarkMode={isDarkMode}
       >
         <div className="h-full w-full bg-neutral-900 text-neutral-100 flex flex-col items-center justify-center p-8 text-center space-y-4">
           <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center p-3">

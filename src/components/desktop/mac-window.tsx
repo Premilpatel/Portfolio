@@ -19,6 +19,7 @@ interface MacWindowProps {
   children: React.ReactNode;
   icon?: string;
   className?: string;
+  isDarkMode?: boolean;
 }
 
 export const MacWindow: React.FC<MacWindowProps> = ({
@@ -36,7 +37,8 @@ export const MacWindow: React.FC<MacWindowProps> = ({
   onFocus,
   children,
   icon,
-  className = ''
+  className = '',
+  isDarkMode = true
 }) => {
   const [position, setPosition] = useState(initialPosition);
   const [size, setSize] = useState(initialSize);
@@ -56,11 +58,10 @@ export const MacWindow: React.FC<MacWindowProps> = ({
 
   // Handle window dragging
   const handleMouseDown = (e: React.MouseEvent) => {
-    // Only drag from the header, not on the control buttons
     if ((e.target as HTMLElement).closest('.window-control-btn')) return;
     
     onFocus();
-    if (isMaximized) return; // Don't drag while maximized
+    if (isMaximized) return;
 
     setIsDragging(true);
     dragRef.current = {
@@ -128,13 +129,21 @@ export const MacWindow: React.FC<MacWindowProps> = ({
         minWidth: `${minWidth}px`,
         minHeight: `${minHeight}px`
       }}
-      className={`fixed top-0 left-0 rounded-xl overflow-hidden shadow-2xl flex flex-col border border-white/20 backdrop-blur-2xl bg-neutral-900/85 text-neutral-100 select-auto animate-in fade-in zoom-in-95 duration-200 ${className}`}
+      className={`fixed top-0 left-0 rounded-xl overflow-hidden shadow-2xl flex flex-col backdrop-blur-2xl select-auto animate-in fade-in zoom-in-95 duration-200 ${
+        isDarkMode 
+          ? 'border border-white/20 bg-neutral-900/85 text-neutral-100' 
+          : 'border border-black/15 bg-white/95 text-neutral-900 shadow-[0_20px_50px_rgba(0,0,0,0.25)]'
+      } ${className}`}
     >
       {/* macOS Title Bar */}
       <div
         onMouseDown={handleMouseDown}
         onDoubleClick={toggleMaximize}
-        className="h-10 px-3.5 bg-neutral-800/80 border-b border-white/10 flex items-center justify-between cursor-default select-none shrink-0"
+        className={`h-10 px-3.5 flex items-center justify-between cursor-default select-none shrink-0 ${
+          isDarkMode 
+            ? 'bg-neutral-800/80 border-b border-white/10 text-neutral-300' 
+            : 'bg-neutral-100/95 border-b border-black/10 text-neutral-700'
+        }`}
       >
         {/* Traffic Light Buttons */}
         <div className="flex items-center space-x-2 group/lights">
@@ -176,7 +185,7 @@ export const MacWindow: React.FC<MacWindowProps> = ({
         </div>
 
         {/* Window Title & Icon */}
-        <div className="flex items-center space-x-2 text-xs font-medium text-neutral-300 pointer-events-none truncate max-w-[65%]">
+        <div className="flex items-center space-x-2 text-xs font-medium pointer-events-none truncate max-w-[65%]">
           {icon && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={icon} alt="" className="w-3.5 h-3.5 object-contain" />
@@ -189,7 +198,9 @@ export const MacWindow: React.FC<MacWindowProps> = ({
       </div>
 
       {/* Window Body */}
-      <div className="flex-1 overflow-auto relative bg-neutral-900/60 backdrop-blur-md">
+      <div className={`flex-1 overflow-auto relative ${
+        isDarkMode ? 'bg-neutral-900/60 backdrop-blur-md' : 'bg-white/95'
+      }`}>
         {children}
       </div>
     </div>

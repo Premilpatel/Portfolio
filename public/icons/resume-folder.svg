@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Back Tab & Flap Gradient -->
+    <linearGradient id="back-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3faaf6"/>
+      <stop offset="100%" stop-color="#1679d6"/>
+    </linearGradient>
+
+    <!-- Front Body Flap Gradient -->
+    <linearGradient id="front-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#73cbfd"/>
+      <stop offset="25%" stop-color="#55bbfb"/>
+      <stop offset="100%" stop-color="#2692ed"/>
+    </linearGradient>
+
+    <!-- Top Highlight -->
+    <linearGradient id="highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="folder-shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.32"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+    </filter>
+
+    <filter id="inset-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feOffset dx="0" dy="1"/>
+      <feGaussianBlur stdDeviation="1" result="offset-blur"/>
+      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+      <feFlood flood-color="#000" flood-opacity="0.15" result="color"/>
+      <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+      <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#folder-shadow)">
+    <!-- Back folder plate and tab -->
+    <path d="M 24 64 C 24 48 36 40 50 40 L 92 40 C 104 40 112 46 120 54 L 132 66 C 138 72 144 74 154 74 L 206 74 C 220 74 232 84 232 98 L 232 196 C 232 210 220 220 206 220 L 50 220 C 36 220 24 210 24 196 Z" fill="url(#back-grad)"/>
+
+    <!-- Inside back sheet line -->
+    <rect x="36" y="66" width="184" height="40" rx="6" fill="#eaf4fd" opacity="0.45"/>
+
+    <!-- Front main folder flap -->
+    <path d="M 24 88 C 24 74 36 74 46 74 L 210 74 C 220 74 232 74 232 88 L 232 198 C 232 212 220 222 206 222 L 50 222 C 36 222 24 212 24 198 Z" fill="url(#front-grad)"/>
+
+    <!-- Top lip highlight on front flap -->
+    <path d="M 26 88 C 26 77 36 76 46 76 L 210 76 C 220 76 230 77 230 88 L 230 92 C 230 82 220 80 210 80 L 46 80 C 36 80 26 82 26 92 Z" fill="url(#highlight)"/>
+
+    <!-- Subtle bottom lip shade -->
+    <path d="M 24 200 C 24 214 36 224 50 224 L 206 224 C 220 224 232 214 232 200 L 232 197 C 232 211 220 221 206 221 L 50 221 C 36 221 24 211 24 197 Z" fill="#12599a" opacity="0.4"/>
+  </g>
+
+  <!-- "resume" text stamped on the folder front in authentic macOS style -->
+  <text 
+    x="128" 
+    y="162" 
+    font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" 
+    font-size="34" 
+    font-weight="500" 
+    letter-spacing="-0.5" 
+    text-anchor="middle" 
+    fill="#2572b8"
+    opacity="0.92"
+  >
+    resume
+  </text>
+  <!-- Subtle top-down embossed highlight on text -->
+  <text 
+    x="128" 
+    y="163" 
+    font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" 
+    font-size="34" 
+    font-weight="500" 
+    letter-spacing="-0.5" 
+    text-anchor="middle" 
+    fill="#ffffff"
+    opacity="0.18"
+    pointer-events="none"
+  >
+    resume
+  </text>
+</svg>
