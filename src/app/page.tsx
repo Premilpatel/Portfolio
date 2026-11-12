@@ -312,8 +312,7 @@ export default function Home() {
         }}
         onOpenDiagram={() => setPreviewImage({ src: '/homelab-architecture.jpg', title: 'Homelab_Architecture.jpg' })}
         onOpenNotion={() => window.open('https://app.notion.com/p/Detection-Monitoring-Homelab-Writeup-2f8ee3aaf9948016a8f1fcdd386f39f2', '_blank')}
-        onOpenSafari={() => openApp('safari')}
-        onOpenMail={() => openApp('mail')}
+        onOpenPhotos={() => openApp('photos')}
       />
 
       {/* Windows Area */}

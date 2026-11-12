@@ -1,20 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  FileText, 
-  Folder, 
-  GraduationCap, 
-  Shield, 
-  BookOpen, 
-  Mail, 
-  ExternalLink, 
-  X, 
-  Minus,
-  Sparkles,
-  ArrowRight
-} from 'lucide-react';
-import { GithubIcon } from '@/components/ui/brand-icons';
+import { X, Minus, ExternalLink } from 'lucide-react';
 
 interface StickyNoteProps {
   onOpenResume: () => void;
@@ -22,8 +9,7 @@ interface StickyNoteProps {
   onOpenCourses: () => void;
   onOpenDiagram: () => void;
   onOpenNotion: () => void;
-  onOpenSafari: () => void;
-  onOpenMail: () => void;
+  onOpenPhotos: () => void;
   isOpen?: boolean;
   onClose?: () => void;
 }
@@ -34,8 +20,7 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
   onOpenCourses,
   onOpenDiagram,
   onOpenNotion,
-  onOpenSafari,
-  onOpenMail,
+  onOpenPhotos,
   isOpen = true,
   onClose
 }) => {
@@ -46,7 +31,6 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
   const noteRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    // Only drag from header or empty area
     setIsDragging(true);
     setDragOffset({
       x: e.clientX - position.x,
@@ -78,6 +62,15 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
 
   if (!isOpen) return null;
 
+  const links = [
+    { label: 'Resume (PDF)', action: onOpenResume, external: false },
+    { label: 'Projects', action: onOpenProjects, external: false },
+    { label: 'Courses', action: onOpenCourses, external: false },
+    { label: 'Homelab Architecture', action: onOpenDiagram, external: false },
+    { label: 'Homelab Notion Writeup', action: onOpenNotion, external: true },
+    { label: 'Photo Gallery', action: onOpenPhotos, external: false }
+  ];
+
   return (
     <div
       ref={noteRef}
@@ -85,7 +78,7 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
         zIndex: 40
       }}
-      className={`fixed top-0 left-0 w-72 sm:w-80 select-none transition-shadow duration-200 ${
+      className={`fixed top-0 left-0 w-64 select-none transition-shadow duration-200 ${
         isDragging ? 'shadow-2xl cursor-grabbing scale-[1.01]' : 'shadow-xl'
       }`}
     >
@@ -121,133 +114,32 @@ export const StickyNote: React.FC<StickyNoteProps> = ({
             </button>
           </div>
 
-          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-700/80">
-            Quick Guide
+          <div className="text-[11px] font-semibold tracking-wide text-neutral-800">
+            Notes
           </div>
 
           <div className="w-8" />
         </div>
 
-        {/* Note Body */}
+        {/* Note Body: Only Bullet Points with Hyperlinks */}
         {!isCollapsed && (
-          <div className="p-4 space-y-3.5 bg-gradient-to-b from-[#fef08a] to-[#fef9c3]">
-            {/* Header / Intro */}
-            <div className="border-b border-neutral-900/15 pb-2">
-              <h3 className="font-bold text-sm tracking-tight text-neutral-900 flex items-center gap-1.5">
-                <span>Welcome to Premil's Portfolio</span>
-                <span className="text-base">👋</span>
-              </h3>
-              <p className="text-[11px] text-neutral-700 mt-0.5 leading-snug">
-                Cybersecurity & Software Engineering @ DePaul University. Here are quick links to explore:
-              </p>
-            </div>
-
-            {/* Quick Links List with interactive bullets */}
-            <div className="space-y-1.5 text-xs">
-              <button
-                onClick={onOpenResume}
-                className="w-full text-left flex items-center justify-between p-1.5 rounded-md hover:bg-black/8 transition-colors group"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <span className="text-sm">📄</span>
-                  <span className="font-semibold text-neutral-900 group-hover:text-blue-800 transition-colors">
-                    Resume (PDF)
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  Open ↗
-                </span>
-              </button>
-
-              <button
-                onClick={onOpenProjects}
-                className="w-full text-left flex items-center justify-between p-1.5 rounded-md hover:bg-black/8 transition-colors group"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <span className="text-sm">📁</span>
-                  <span className="font-semibold text-neutral-900 group-hover:text-blue-800 transition-colors">
-                    Projects Folder
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  View ↗
-                </span>
-              </button>
-
-              <button
-                onClick={onOpenCourses}
-                className="w-full text-left flex items-center justify-between p-1.5 rounded-md hover:bg-black/8 transition-colors group"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <span className="text-sm">🎓</span>
-                  <span className="font-semibold text-neutral-900 group-hover:text-blue-800 transition-colors">
-                    Courses & Transcripts
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  View ↗
-                </span>
-              </button>
-
-              <button
-                onClick={onOpenDiagram}
-                className="w-full text-left flex items-center justify-between p-1.5 rounded-md hover:bg-black/8 transition-colors group"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <span className="text-sm">🛡️</span>
-                  <span className="font-semibold text-neutral-900 group-hover:text-blue-800 transition-colors">
-                    Homelab Architecture
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  Diagram ↗
-                </span>
-              </button>
-
-              <button
-                onClick={onOpenNotion}
-                className="w-full text-left flex items-center justify-between p-1.5 rounded-md hover:bg-black/8 transition-colors group"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <span className="text-sm">📝</span>
-                  <span className="font-semibold text-neutral-900 group-hover:text-blue-800 transition-colors">
-                    Homelab Notion Writeup
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  Link ↗
-                </span>
-              </button>
-
-              <button
-                onClick={onOpenMail}
-                className="w-full text-left flex items-center justify-between p-1.5 rounded-md hover:bg-black/8 transition-colors group"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <span className="text-sm">✉️</span>
-                  <span className="font-semibold text-neutral-900 group-hover:text-blue-800 transition-colors">
-                    Get in Touch
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  Gmail ↗
-                </span>
-              </button>
-            </div>
-
-            {/* Bottom Footer Tip */}
-            <div className="pt-2 border-t border-neutral-900/15 flex items-center justify-between text-[10px] text-neutral-600">
-              <span>Tip: You can drag or close this note</span>
-              <a
-                href="https://github.com/Premilpatel"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-neutral-800 hover:text-black flex items-center gap-1"
-              >
-                <GithubIcon className="w-3 h-3 inline" />
-                <span>GitHub</span>
-              </a>
-            </div>
+          <div className="p-3.5 bg-gradient-to-b from-[#fef08a] to-[#fef9c3]">
+            <ul className="space-y-2 text-xs">
+              {links.map((link) => (
+                <li key={link.label} className="flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-800 shrink-0" />
+                  <button
+                    onClick={link.action}
+                    className="text-neutral-900 font-medium hover:text-blue-700 hover:underline underline-offset-2 transition-colors text-left flex items-center gap-1 group"
+                  >
+                    <span>{link.label}</span>
+                    {link.external && (
+                      <ExternalLink className="w-3 h-3 text-neutral-500 group-hover:text-blue-700 opacity-70 group-hover:opacity-100" />
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>
