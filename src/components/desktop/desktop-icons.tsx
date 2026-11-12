@@ -34,8 +34,8 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
   const desktopItems: DesktopIconItem[] = [
     // Column 1
     {
-      id: 'resume-folder',
-      name: 'Resume',
+      id: 'resume-file',
+      name: 'Premil_Patel_Resume.pdf',
       type: 'pdf',
       iconType: 'resume',
       action: () => {
@@ -94,9 +94,9 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
         return (
           // eslint-disable-next-line @next/next/no-img-element
           <img 
-            src="/icons/resume-folder.svg" 
-            alt="Resume" 
-            className="w-13 h-13 object-contain drop-shadow-md"
+            src="/icons/mac-pdf.png" 
+            alt="Resume PDF" 
+            className="w-12 h-14 object-contain drop-shadow-md"
           />
         );
 

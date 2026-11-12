@@ -2,19 +2,15 @@
 
 import React, { useState } from 'react';
 import { 
-  Folder, 
-  FileText, 
-  Code2, 
   ExternalLink, 
   ChevronRight, 
   ChevronLeft, 
   Grid, 
   List, 
   Search, 
-  ShieldCheck,
-  Server,
-  Terminal,
-  Download
+  Info,
+  Download,
+  FolderOpen
 } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/brand-icons';
 
@@ -22,33 +18,66 @@ export interface FileItem {
   id: string;
   name: string;
   type: 'folder' | 'pdf' | 'doc' | 'image' | 'code' | 'link';
-  size?: string;
+  kind: string;
+  size: string;
+  fullSize?: string;
   date: string;
+  createdDate?: string;
+  modifiedDate?: string;
+  lastOpened?: string;
+  whereLocation?: string;
   folder?: string;
-  content?: string;
+  pages?: string;
+  author?: string;
   url?: string;
 }
 
 const INITIAL_FILES: FileItem[] = [
   // Root Folders & Files
-  { id: 'f-projects', name: 'Projects', type: 'folder', date: 'Oct 23, 2026', folder: 'root' },
+  { 
+    id: 'f-projects', 
+    name: 'Projects', 
+    type: 'folder', 
+    kind: 'Folder',
+    size: '4 items',
+    fullSize: '132 KB on disk for 4 items',
+    date: 'Oct 23, 2026', 
+    createdDate: 'October 15, 2026 at 10:14 AM',
+    modifiedDate: 'October 23, 2026 at 1:13 PM',
+    lastOpened: 'Today at 1:13 PM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil',
+    folder: 'root' 
+  },
   { 
     id: 'doc-resume', 
     name: 'Premil_Patel_Resume.pdf', 
     type: 'pdf', 
-    size: '142 KB', 
+    kind: 'Portable Document Format (PDF)',
+    size: '182 KB', 
+    fullSize: '181,854 bytes (182 KB on disk)',
     date: 'Oct 2026', 
-    folder: 'root',
-    content: `Premil Patel - Cybersecurity & Software Engineering\nDePaul University (GPA: 4.0/4.0)\n\nExperience:\n• Relativity — Security Engineer Intern (Detection & IR)\n• ComEd — Data Engineer Intern\n• Seva App — Technical Project Manager Intern\n\nContact: patelpremil70@gmail.com | 224-477-3511`
+    createdDate: 'October 20, 2026 at 3:42 PM',
+    modifiedDate: 'October 23, 2026 at 1:13 PM',
+    lastOpened: 'Today at 1:13 PM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil',
+    pages: '1 page (8.5 × 11 in)',
+    author: 'Premil Patel',
+    folder: 'root'
   },
   { 
     id: 'doc-about', 
     name: 'About_Premil.txt', 
     type: 'doc', 
+    kind: 'Plain Text Document',
     size: '1.8 KB', 
+    fullSize: '1,842 bytes (4 KB on disk)',
     date: 'Oct 2026', 
-    folder: 'root',
-    content: `Premil Patel\nCybersecurity & Software Engineering Student @ DePaul University\n\nExperienced in threat detection pipelines (WIZ, ThreatStream, Sentinel, Sigma rules), enterprise homelabs, data engineering (SQL, Microsoft Fabric, Power BI), and modern web technologies.`
+    createdDate: 'October 20, 2026 at 8:30 AM',
+    modifiedDate: 'October 23, 2026 at 1:13 PM',
+    lastOpened: 'Today at 1:13 PM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil',
+    author: 'Premil Patel',
+    folder: 'root'
   },
 
   // Files inside "Projects"
@@ -56,38 +85,62 @@ const INITIAL_FILES: FileItem[] = [
     id: 'proj-homelab', 
     name: 'Blue_Team_Detection_Homelab.md', 
     type: 'doc', 
+    kind: 'Markdown Document',
     size: '34 KB', 
+    fullSize: '34,816 bytes (36 KB on disk)',
     date: 'Oct 2026', 
+    createdDate: 'October 18, 2026 at 11:20 AM',
+    modifiedDate: 'October 23, 2026 at 1:13 PM',
+    lastOpened: 'Today at 1:13 PM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
+    author: 'Premil Patel',
     folder: 'Projects',
-    content: `Blue Team Operations & Detection Homelab\n\n• Provisioned & configured virtual machines (Windows, Linux, Domain Controller, Security Server) using VirtualBox to analyze attacker techniques and defensive tooling.\n• Simulated credential brute-forcing & reverse-shell payloads against Active Directory to author Wazuh detection alerts.`,
     url: 'https://github.com/Premilpatel'
   },
   { 
     id: 'proj-network', 
     name: 'Network_Security_Architecture.md', 
     type: 'doc', 
+    kind: 'Markdown Document',
     size: '22 KB', 
+    fullSize: '22,528 bytes (24 KB on disk)',
     date: 'Sep 2026', 
-    folder: 'Projects',
-    content: `Network Security Architecture & Design\n\n• Designed and implemented a Dual-Path Dual-Layer firewall architecture with segmented DMZ and Intranet networks.\n• Configured NAT/PAT, static routing, and firewall rules to secure public-facing services while isolating internal systems.`
+    createdDate: 'September 28, 2026 at 4:10 PM',
+    modifiedDate: 'October 19, 2026 at 2:00 PM',
+    lastOpened: 'October 22, 2026 at 5:00 PM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
+    author: 'Premil Patel',
+    folder: 'Projects'
   },
   { 
     id: 'proj-threat-pipeline', 
     name: 'Threat_Intelligence_Pipeline.py', 
     type: 'code', 
+    kind: 'Python Source Code',
     size: '48 KB', 
+    fullSize: '49,152 bytes (52 KB on disk)',
     date: 'Aug 2026', 
-    folder: 'Projects',
-    content: `Threat Intelligence Pipeline (Relativity Detection & IR)\n\n• Ingests ~2,000 IOCs/articles daily from WIZ Graph API & ThreatStream API.\n• Filters against threat models and vulnerability data, surfacing ranked findings to Slack.`
+    createdDate: 'August 12, 2026 at 2:15 PM',
+    modifiedDate: 'October 20, 2026 at 4:30 PM',
+    lastOpened: 'October 23, 2026 at 11:00 AM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
+    author: 'Premil Patel (Relativity IR)',
+    folder: 'Projects'
   },
   { 
     id: 'proj-portfolio', 
     name: 'macOS_Portfolio_Website.tsx', 
     type: 'code', 
+    kind: 'TypeScript React Source',
     size: '28 KB', 
+    fullSize: '28,672 bytes (32 KB on disk)',
     date: 'Oct 2026', 
+    createdDate: 'October 20, 2026 at 9:00 AM',
+    modifiedDate: 'October 23, 2026 at 1:13 PM',
+    lastOpened: 'Today at 1:13 PM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
+    author: 'Premil Patel',
     folder: 'Projects',
-    content: `Interactive macOS Yosemite Portfolio\n\n• Built with Next.js 16, TypeScript, Tailwind CSS, and shadcn styling.\n• Authentic cosine magnification dock, draggable window manager, functional Finder, and realistic Apple apps.`,
     url: 'https://github.com/Premilpatel/Portfolio'
   }
 ];
@@ -148,9 +201,9 @@ export const FinderApp: React.FC<{
   };
 
   return (
-    <div className="flex h-full w-full bg-neutral-900/90 text-neutral-200 select-none">
+    <div className="flex h-full w-full bg-[#1e1e1e]/95 text-neutral-200 select-none">
       {/* Finder Left Sidebar */}
-      <div className="w-48 bg-neutral-950/60 border-r border-white/10 p-3 flex flex-col justify-between shrink-0">
+      <div className="w-52 bg-[#181818]/90 border-r border-white/10 p-3 flex flex-col justify-between shrink-0">
         <div className="space-y-4">
           <div>
             <div className="text-[10px] font-semibold tracking-wider text-neutral-400 uppercase px-2 mb-1.5">
@@ -159,44 +212,80 @@ export const FinderApp: React.FC<{
             <div className="space-y-0.5 text-xs">
               <button
                 onClick={() => navigateTo('root')}
-                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'root' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'root' ? 'bg-blue-600 text-white font-medium' : 'text-neutral-300 hover:bg-white/10'}`}
               >
-                <Folder className="w-3.5 h-3.5 text-blue-400" />
-                <span>All Files</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/mac-folder-blue.png" alt="Home" className="w-4 h-4 object-contain" />
+                <span>premil</span>
               </button>
 
               <button
                 onClick={() => navigateTo('Projects')}
-                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'Projects' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'Projects' ? 'bg-blue-600 text-white font-medium' : 'text-neutral-300 hover:bg-white/10'}`}
               >
-                <Code2 className="w-3.5 h-3.5 text-purple-400" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/projects-folder.png" alt="Projects" className="w-4 h-4 object-contain" />
                 <span>Projects</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  const resumeFile = INITIAL_FILES.find(f => f.id === 'doc-resume');
+                  if (resumeFile && onOpenFile) {
+                    onOpenFile(resumeFile);
+                  } else {
+                    navigateTo('root');
+                    setSelectedFile(resumeFile || null);
+                  }
+                }}
+                className="w-full flex items-center space-x-2 px-2 py-1.5 rounded-md text-neutral-300 hover:bg-white/10 transition-colors"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/mac-pdf.png" alt="Resume" className="w-4 h-4 object-contain" />
+                <span>Resume (PDF)</span>
               </button>
             </div>
           </div>
 
           <div>
             <div className="text-[10px] font-semibold tracking-wider text-neutral-400 uppercase px-2 mb-1.5">
-              Quick Links
+              Locations
             </div>
-            <div className="space-y-1 text-xs">
-              <a 
+            <div className="space-y-0.5 text-xs">
+              <button 
+                onClick={() => navigateTo('root')}
+                className="w-full flex items-center space-x-2 px-2 py-1.5 rounded-md text-neutral-400 hover:bg-white/10 transition-colors"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/mac-folder-gray.png" alt="Macintosh HD" className="w-4 h-4 object-contain opacity-80" />
+                <span>Macintosh HD</span>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div className="text-[10px] font-semibold tracking-wider text-neutral-400 uppercase px-2 mb-1.5">
+              Links
+            </div>
+            <div className="space-y-0.5 text-xs">
+              <a
                 href="https://github.com/Premilpatel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-2 py-1.5 rounded-md hover:bg-white/10 text-neutral-300 transition-colors"
+                className="w-full flex items-center space-x-2 px-2 py-1.5 rounded-md text-neutral-300 hover:bg-white/10 transition-colors"
               >
-                <GithubIcon className="w-3.5 h-3.5 text-neutral-300" />
+                <GithubIcon className="w-4 h-4 text-white" />
                 <span>GitHub Profile</span>
               </a>
 
-              <a 
+              <a
                 href="https://www.linkedin.com/in/premilpatel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-2 py-1.5 rounded-md hover:bg-white/10 text-neutral-300 transition-colors"
+                className="w-full flex items-center space-x-2 px-2 py-1.5 rounded-md text-neutral-300 hover:bg-white/10 transition-colors"
               >
-                <span className="w-3.5 h-3.5 bg-blue-600 text-[10px] font-bold rounded flex items-center justify-center text-white">in</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/linkedin.png" alt="LinkedIn" className="w-4 h-4 object-contain rounded-sm" />
                 <span>LinkedIn</span>
               </a>
             </div>
@@ -214,7 +303,7 @@ export const FinderApp: React.FC<{
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Finder Toolbar */}
-        <div className="h-11 border-b border-white/10 px-4 flex items-center justify-between bg-neutral-900/40">
+        <div className="h-11 border-b border-white/10 px-4 flex items-center justify-between bg-neutral-900/60 backdrop-blur-md">
           <div className="flex items-center space-x-3">
             {/* Back / Forward */}
             <div className="flex items-center space-x-1">
@@ -222,6 +311,7 @@ export const FinderApp: React.FC<{
                 onClick={goBack} 
                 disabled={historyIndex === 0}
                 className="p-1 rounded hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent"
+                title="Go Back"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -229,15 +319,22 @@ export const FinderApp: React.FC<{
                 onClick={goForward} 
                 disabled={historyIndex >= history.length - 1}
                 className="p-1 rounded hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent"
+                title="Go Forward"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
             {/* Folder Name Breadcrumb */}
-            <span className="text-xs font-semibold text-white">
-              {currentFolder === 'root' ? 'Macintosh HD / Users / premil' : `Macintosh HD / Users / premil / ${currentFolder}`}
-            </span>
+            <div className="flex items-center space-x-1.5 text-xs text-neutral-300">
+              <span className="text-neutral-500">Macintosh HD</span>
+              <span className="text-neutral-500">▸</span>
+              <span className="text-neutral-500">Users</span>
+              <span className="text-neutral-500">▸</span>
+              <span className="font-semibold text-white">
+                {currentFolder === 'root' ? 'premil' : currentFolder}
+              </span>
+            </div>
           </div>
 
           {/* Right Toolbar Controls */}
@@ -277,7 +374,8 @@ export const FinderApp: React.FC<{
           <div className="flex-1 p-4 overflow-y-auto">
             {currentFiles.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-neutral-500 text-xs">
-                <Folder className="w-10 h-10 mb-2 stroke-1" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/mac-folder-blue.png" alt="Empty" className="w-16 h-16 opacity-40 mb-2 object-contain" />
                 <span>This folder is empty</span>
               </div>
             ) : viewMode === 'icons' ? (
@@ -291,33 +389,34 @@ export const FinderApp: React.FC<{
                       onDoubleClick={() => handleItemDoubleClick(file)}
                       className={`flex flex-col items-center p-2 rounded-lg cursor-pointer transition-colors group ${isSelected ? 'bg-blue-600/40 border border-blue-500/60' : 'hover:bg-white/10 border border-transparent'}`}
                     >
-                      {/* Icon */}
-                      <div className="w-14 h-14 flex items-center justify-center mb-1">
-                        {file.type === 'folder' && (
-                          <Folder className="w-12 h-12 text-[#3dabf5] fill-[#3dabf5]/40" />
-                        )}
-                        {file.type === 'pdf' && (
-                          <div className="w-10 h-12 rounded bg-red-600/20 border border-red-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-red-300 shadow">
-                            <FileText className="w-5 h-5 text-red-400 mb-0.5" />
-                            PDF
-                          </div>
-                        )}
-                        {file.type === 'code' && (
-                          <div className="w-10 h-12 rounded bg-purple-600/20 border border-purple-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-purple-300 shadow">
-                            <Code2 className="w-5 h-5 text-purple-400 mb-0.5" />
-                            CODE
-                          </div>
-                        )}
-                        {file.type === 'doc' && (
-                          <div className="w-10 h-12 rounded bg-sky-600/20 border border-sky-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-sky-300 shadow">
-                            <FileText className="w-5 h-5 text-sky-400 mb-0.5" />
-                            DOC
-                          </div>
+                      {/* Authentic Icon rendering */}
+                      <div className="w-16 h-16 flex items-center justify-center mb-1">
+                        {file.type === 'folder' ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img 
+                            src={file.name === 'Projects' ? '/icons/projects-folder.png' : '/icons/mac-folder-blue.png'} 
+                            alt="Folder" 
+                            className="w-14 h-14 object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
+                          />
+                        ) : file.type === 'pdf' ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img 
+                            src="/icons/mac-pdf.png" 
+                            alt="PDF" 
+                            className="w-12 h-14 object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
+                          />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img 
+                            src="/icons/mac-pdf.png" 
+                            alt="File" 
+                            className="w-12 h-14 object-contain drop-shadow-md opacity-90 group-hover:scale-105 transition-transform" 
+                          />
                         )}
                       </div>
 
                       {/* Label */}
-                      <span className="text-xs text-center text-neutral-200 line-clamp-2 break-all px-1">
+                      <span className={`text-xs text-center line-clamp-2 break-all px-1.5 py-0.5 rounded ${isSelected ? 'bg-blue-600 text-white font-medium' : 'text-neutral-200'}`}>
                         {file.name}
                       </span>
                     </div>
@@ -344,9 +443,11 @@ export const FinderApp: React.FC<{
                       >
                         <div className="col-span-6 flex items-center space-x-2 truncate">
                           {file.type === 'folder' ? (
-                            <Folder className="w-4 h-4 text-[#3dabf5] shrink-0" />
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src="/icons/mac-folder-blue.png" alt="Folder" className="w-4 h-4 object-contain shrink-0" />
                           ) : (
-                            <FileText className="w-4 h-4 text-neutral-400 shrink-0" />
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src="/icons/mac-pdf.png" alt="File" className="w-4 h-4 object-contain shrink-0" />
                           )}
                           <span className="truncate">{file.name}</span>
                         </div>
@@ -360,47 +461,158 @@ export const FinderApp: React.FC<{
             )}
           </div>
 
-          {/* Quick Preview Inspector on the Right */}
-          {selectedFile && selectedFile.type !== 'folder' && (
-            <div className="w-64 border-l border-white/10 p-4 bg-neutral-950/40 flex flex-col justify-between overflow-y-auto">
-              <div className="space-y-4">
-                <div className="flex flex-col items-center text-center p-3 border-b border-white/10">
-                  <FileText className="w-12 h-12 text-blue-400 mb-2" />
-                  <div className="font-semibold text-xs text-white break-all">{selectedFile.name}</div>
-                  <div className="text-[11px] text-neutral-400 mt-1">{selectedFile.size} • {selectedFile.date}</div>
+          {/* Authentic macOS Metadata Preview Inspector Pane */}
+          {selectedFile && (
+            <div className="w-72 border-l border-white/10 bg-[#161616]/95 flex flex-col justify-between overflow-y-auto select-text">
+              <div className="p-4 space-y-4">
+                {/* Header with Large Icon & File Name */}
+                <div className="flex flex-col items-center text-center pb-3 border-b border-white/10">
+                  <div className="w-20 h-20 flex items-center justify-center mb-2">
+                    {selectedFile.type === 'folder' ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img 
+                        src={selectedFile.name === 'Projects' ? '/icons/projects-folder.png' : '/icons/mac-folder-blue.png'} 
+                        alt="Folder" 
+                        className="w-18 h-18 object-contain drop-shadow-lg" 
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img 
+                        src="/icons/mac-pdf.png" 
+                        alt="PDF" 
+                        className="w-16 h-18 object-contain drop-shadow-lg" 
+                      />
+                    )}
+                  </div>
+                  <div className="font-semibold text-xs text-white break-all leading-tight">{selectedFile.name}</div>
+                  <div className="text-[11px] text-neutral-400 mt-1">{selectedFile.kind}</div>
                 </div>
 
-                {selectedFile.content && (
-                  <div className="space-y-1.5">
-                    <div className="text-[10px] font-semibold tracking-wider text-neutral-400 uppercase">Preview</div>
-                    <div className="text-xs text-neutral-300 bg-white/5 p-2.5 rounded-lg border border-white/10 whitespace-pre-wrap max-h-48 overflow-y-auto font-mono text-[11px] leading-relaxed">
-                      {selectedFile.content}
+                {/* Structured Metadata Inspector */}
+                <div className="space-y-3 text-[11px]">
+                  <div>
+                    <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase mb-1.5 flex items-center space-x-1">
+                      <Info className="w-3 h-3 text-blue-400" />
+                      <span>General</span>
+                    </div>
+                    <div className="space-y-1.5 bg-white/5 rounded-lg p-2.5 border border-white/5">
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Kind:</span>
+                        <span className="text-neutral-200 text-right font-medium truncate max-w-[150px]">{selectedFile.kind}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Size:</span>
+                        <span className="text-neutral-200 text-right">{selectedFile.fullSize || selectedFile.size}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Where:</span>
+                        <span className="text-neutral-200 text-right truncate max-w-[150px]">{selectedFile.whereLocation || 'Macintosh HD'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Created:</span>
+                        <span className="text-neutral-200 text-right">{selectedFile.createdDate || selectedFile.date}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Modified:</span>
+                        <span className="text-neutral-200 text-right">{selectedFile.modifiedDate || selectedFile.date}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Last opened:</span>
+                        <span className="text-neutral-200 text-right">{selectedFile.lastOpened || 'Today'}</span>
+                      </div>
                     </div>
                   </div>
-                )}
+
+                  {/* More Info */}
+                  <div>
+                    <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase mb-1.5">
+                      More Info
+                    </div>
+                    <div className="space-y-1.5 bg-white/5 rounded-lg p-2.5 border border-white/5">
+                      {selectedFile.pages && (
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Pages:</span>
+                          <span className="text-neutral-200 font-medium">{selectedFile.pages}</span>
+                        </div>
+                      )}
+                      {selectedFile.author && (
+                        <div className="flex justify-between">
+                          <span className="text-neutral-400">Author:</span>
+                          <span className="text-neutral-200 font-medium">{selectedFile.author}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-neutral-400">Security:</span>
+                        <span className="text-emerald-400 font-medium">None (Verified)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sharing & Permissions */}
+                  <div>
+                    <div className="text-[10px] font-bold tracking-wider text-neutral-400 uppercase mb-1.5">
+                      Sharing & Permissions
+                    </div>
+                    <div className="space-y-1 bg-white/5 rounded-lg p-2.5 border border-white/5 text-[10px]">
+                      <div className="flex justify-between">
+                        <span className="text-neutral-300">premil (Me)</span>
+                        <span className="text-neutral-400">Read & Write</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-300">staff</span>
+                        <span className="text-neutral-400">Read only</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-neutral-300">everyone</span>
+                        <span className="text-neutral-400">Read only</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-2 mt-4">
-                {selectedFile.type === 'pdf' && (
+              {/* Action Buttons at bottom of Inspector */}
+              <div className="p-4 border-t border-white/10 space-y-2 bg-neutral-900/60">
+                {selectedFile.type === 'folder' ? (
                   <button
-                    onClick={() => onOpenFile && onOpenFile(selectedFile)}
-                    className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors"
+                    onClick={() => navigateTo(selectedFile.name)}
+                    className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
                   >
-                    <span>Open Full Resume</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <FolderOpen className="w-3.5 h-3.5" />
+                    <span>Open Folder</span>
                   </button>
-                )}
-
-                {selectedFile.url && (
-                  <a
-                    href={selectedFile.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2 px-3 bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors border border-white/10"
-                  >
-                    <span>View on GitHub</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                ) : selectedFile.type === 'pdf' ? (
+                  <div className="space-y-1.5">
+                    <button
+                      onClick={() => onOpenFile && onOpenFile(selectedFile)}
+                      className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
+                    >
+                      <span>Open in Resume Viewer</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </button>
+                    <a
+                      href="/Premil_Patel_Resume.pdf"
+                      download="Premil_Patel_Resume.pdf"
+                      className="w-full py-1.5 px-3 bg-white/10 hover:bg-white/15 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors border border-white/10"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download PDF</span>
+                    </a>
+                  </div>
+                ) : (
+                  <div className="space-y-1.5">
+                    {selectedFile.url && (
+                      <a
+                        href={selectedFile.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2 px-3 bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors border border-white/10"
+                      >
+                        <span>View on GitHub</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -408,7 +620,7 @@ export const FinderApp: React.FC<{
         </div>
 
         {/* Status Bar */}
-        <div className="h-6 border-t border-white/10 px-3 flex items-center justify-between text-[11px] text-neutral-400 bg-neutral-950/40">
+        <div className="h-6 border-t border-white/10 px-3 flex items-center justify-between text-[11px] text-neutral-400 bg-[#161616]">
           <span>{currentFiles.length} items</span>
           <span>Premil's MacBook Pro</span>
         </div>
