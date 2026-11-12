@@ -58,8 +58,8 @@ const DOCK_APPS: DockApp[] = [
   },
   {
     id: 'safari',
-    name: 'Safari',
-    icon: 'https://cdn.21st.dev/assets/mirror/d5/d558230225bb0dd1897db6c7cf0d03b29506eef8078fe25313c48cd8f72d05ad.png'
+    name: 'Chrome',
+    icon: '/icons/chrome.png'
   },
   {
     id: 'photos',
@@ -123,7 +123,7 @@ export default function Home() {
       finder: 'Finder',
       resume: 'Resume Viewer',
       gallery: 'Photos',
-      safari: 'Safari',
+      safari: 'Google Chrome',
       notes: 'Notes',
       mail: 'Gmail',
       gdrive: 'Google Drive',
@@ -391,11 +391,11 @@ export default function Home() {
         <GalleryApp />
       </MacWindow>
 
-      {/* 4. Safari Browser Window */}
+      {/* 4. Chrome Browser Window */}
       <MacWindow
         id="safari"
-        title="Safari — Premil Patel Online"
-        icon="https://cdn.21st.dev/assets/mirror/d5/d558230225bb0dd1897db6c7cf0d03b29506eef8078fe25313c48cd8f72d05ad.png"
+        title="Google Chrome — Premil Patel Online"
+        icon="/icons/chrome.png"
         isOpen={windows.safari?.isOpen}
         isMinimized={windows.safari?.isMinimized}
         zIndex={windows.safari?.zIndex || 13}
