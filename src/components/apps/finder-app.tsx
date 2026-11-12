@@ -8,9 +8,10 @@ import {
   Grid, 
   List, 
   Search, 
-  Info,
+  Info, 
   Download,
-  FolderOpen
+  FolderOpen,
+  Link as LinkIcon
 } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/brand-icons';
 
@@ -40,7 +41,7 @@ const INITIAL_FILES: FileItem[] = [
     type: 'folder', 
     kind: 'Folder',
     size: '4 items',
-    fullSize: '132 KB on disk for 4 items',
+    fullSize: '16 KB on disk for 4 items',
     date: 'Oct 23, 2026', 
     createdDate: 'October 15, 2026 at 10:14 AM',
     modifiedDate: 'October 23, 2026 at 1:13 PM',
@@ -80,14 +81,14 @@ const INITIAL_FILES: FileItem[] = [
     folder: 'root'
   },
 
-  // Files inside "Projects"
+  // Project Links inside "Projects" (using folder link icon)
   { 
-    id: 'proj-homelab', 
-    name: 'Blue_Team_Detection_Homelab.md', 
-    type: 'doc', 
-    kind: 'Markdown Document',
-    size: '34 KB', 
-    fullSize: '34,816 bytes (36 KB on disk)',
+    id: 'proj-homelab-notion', 
+    name: 'Detection-Monitoring-Homelab-Writeup', 
+    type: 'link', 
+    kind: 'Folder Link (Notion Writeup)',
+    size: '4 KB', 
+    fullSize: '4,096 bytes (4 KB on disk)',
     date: 'Oct 2026', 
     createdDate: 'October 18, 2026 at 11:20 AM',
     modifiedDate: 'October 23, 2026 at 1:13 PM',
@@ -95,45 +96,47 @@ const INITIAL_FILES: FileItem[] = [
     whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
     author: 'Premil Patel',
     folder: 'Projects',
-    url: 'https://github.com/Premilpatel'
+    url: 'https://app.notion.com/p/Detection-Monitoring-Homelab-Writeup-2f8ee3aaf9948016a8f1fcdd386f39f2'
   },
   { 
-    id: 'proj-network', 
-    name: 'Network_Security_Architecture.md', 
-    type: 'doc', 
-    kind: 'Markdown Document',
-    size: '22 KB', 
-    fullSize: '22,528 bytes (24 KB on disk)',
+    id: 'proj-network-gdrive', 
+    name: 'Network-Security-Architecture-Report', 
+    type: 'link', 
+    kind: 'Folder Link (Google Drive)',
+    size: '4 KB', 
+    fullSize: '4,096 bytes (4 KB on disk)',
     date: 'Sep 2026', 
     createdDate: 'September 28, 2026 at 4:10 PM',
     modifiedDate: 'October 19, 2026 at 2:00 PM',
     lastOpened: 'October 22, 2026 at 5:00 PM',
     whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
     author: 'Premil Patel',
-    folder: 'Projects'
+    folder: 'Projects',
+    url: 'https://drive.google.com/file/d/13I3Wrc7NriuGnpLBPH73tM6UrJ9xlRn7/view'
   },
   { 
     id: 'proj-threat-pipeline', 
-    name: 'Threat_Intelligence_Pipeline.py', 
-    type: 'code', 
-    kind: 'Python Source Code',
-    size: '48 KB', 
-    fullSize: '49,152 bytes (52 KB on disk)',
+    name: 'Threat-Intelligence-Pipeline', 
+    type: 'link', 
+    kind: 'Folder Link (GitHub Repo)',
+    size: '4 KB', 
+    fullSize: '4,096 bytes (4 KB on disk)',
     date: 'Aug 2026', 
     createdDate: 'August 12, 2026 at 2:15 PM',
     modifiedDate: 'October 20, 2026 at 4:30 PM',
     lastOpened: 'October 23, 2026 at 11:00 AM',
     whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
     author: 'Premil Patel (Relativity IR)',
-    folder: 'Projects'
+    folder: 'Projects',
+    url: 'https://github.com/Premilpatel'
   },
   { 
     id: 'proj-portfolio', 
-    name: 'macOS_Portfolio_Website.tsx', 
-    type: 'code', 
-    kind: 'TypeScript React Source',
-    size: '28 KB', 
-    fullSize: '28,672 bytes (32 KB on disk)',
+    name: 'macOS-Portfolio-Website', 
+    type: 'link', 
+    kind: 'Folder Link (GitHub Repo)',
+    size: '4 KB', 
+    fullSize: '4,096 bytes (4 KB on disk)',
     date: 'Oct 2026', 
     createdDate: 'October 20, 2026 at 9:00 AM',
     modifiedDate: 'October 23, 2026 at 1:13 PM',
@@ -191,6 +194,8 @@ export const FinderApp: React.FC<{
   const handleItemDoubleClick = (item: FileItem) => {
     if (item.type === 'folder') {
       navigateTo(item.name);
+    } else if (item.type === 'link' && item.url) {
+      window.open(item.url, '_blank');
     } else {
       if (onOpenFile) {
         onOpenFile(item);
@@ -279,6 +284,28 @@ export const FinderApp: React.FC<{
               </a>
 
               <a
+                href="https://app.notion.com/p/Detection-Monitoring-Homelab-Writeup-2f8ee3aaf9948016a8f1fcdd386f39f2"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center space-x-2 px-2 py-1.5 rounded-md text-neutral-300 hover:bg-white/10 transition-colors"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/notion.png" alt="Notion" className="w-4 h-4 object-contain rounded-sm" />
+                <span>Notion Writeup</span>
+              </a>
+
+              <a
+                href="https://drive.google.com/file/d/13I3Wrc7NriuGnpLBPH73tM6UrJ9xlRn7/view"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center space-x-2 px-2 py-1.5 rounded-md text-neutral-300 hover:bg-white/10 transition-colors"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icons/gdrive.png" alt="Google Drive" className="w-4 h-4 object-contain" />
+                <span>Google Drive</span>
+              </a>
+
+              <a
                 href="https://www.linkedin.com/in/premilpatel"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -310,7 +337,7 @@ export const FinderApp: React.FC<{
               <button 
                 onClick={goBack} 
                 disabled={historyIndex === 0}
-                className="p-1 rounded hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent"
+                className="p-1 rounded hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                 title="Go Back"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -318,7 +345,7 @@ export const FinderApp: React.FC<{
               <button 
                 onClick={goForward} 
                 disabled={historyIndex >= history.length - 1}
-                className="p-1 rounded hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent"
+                className="p-1 rounded hover:bg-white/10 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                 title="Go Forward"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -391,7 +418,14 @@ export const FinderApp: React.FC<{
                     >
                       {/* Authentic Icon rendering */}
                       <div className="w-16 h-16 flex items-center justify-center mb-1">
-                        {file.type === 'folder' ? (
+                        {file.type === 'link' ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img 
+                            src="/icons/folder-link.png" 
+                            alt="Folder Link" 
+                            className="w-14 h-14 object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
+                          />
+                        ) : file.type === 'folder' ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img 
                             src={file.name === 'Projects' ? '/icons/projects-folder.png' : '/icons/mac-folder-blue.png'} 
@@ -442,7 +476,10 @@ export const FinderApp: React.FC<{
                         className={`grid grid-cols-12 py-1.5 px-2 cursor-pointer items-center transition-colors ${isSelected ? 'bg-blue-600 text-white' : 'hover:bg-white/10'}`}
                       >
                         <div className="col-span-6 flex items-center space-x-2 truncate">
-                          {file.type === 'folder' ? (
+                          {file.type === 'link' ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src="/icons/folder-link.png" alt="Link" className="w-4 h-4 object-contain shrink-0" />
+                          ) : file.type === 'folder' ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src="/icons/mac-folder-blue.png" alt="Folder" className="w-4 h-4 object-contain shrink-0" />
                           ) : (
@@ -468,7 +505,14 @@ export const FinderApp: React.FC<{
                 {/* Header with Large Icon & File Name */}
                 <div className="flex flex-col items-center text-center pb-3 border-b border-white/10">
                   <div className="w-20 h-20 flex items-center justify-center mb-2">
-                    {selectedFile.type === 'folder' ? (
+                    {selectedFile.type === 'link' ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img 
+                        src="/icons/folder-link.png" 
+                        alt="Folder Link" 
+                        className="w-18 h-18 object-contain drop-shadow-lg" 
+                      />
+                    ) : selectedFile.type === 'folder' ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img 
                         src={selectedFile.name === 'Projects' ? '/icons/projects-folder.png' : '/icons/mac-folder-blue.png'} 
@@ -529,6 +573,14 @@ export const FinderApp: React.FC<{
                       More Info
                     </div>
                     <div className="space-y-1.5 bg-white/5 rounded-lg p-2.5 border border-white/5">
+                      {selectedFile.url && (
+                        <div className="flex flex-col space-y-1">
+                          <span className="text-neutral-400">Target URL:</span>
+                          <span className="text-blue-400 break-all text-[10px] hover:underline cursor-pointer" onClick={() => window.open(selectedFile.url, '_blank')}>
+                            {selectedFile.url}
+                          </span>
+                        </div>
+                      )}
                       {selectedFile.pages && (
                         <div className="flex justify-between">
                           <span className="text-neutral-400">Pages:</span>
@@ -543,7 +595,7 @@ export const FinderApp: React.FC<{
                       )}
                       <div className="flex justify-between">
                         <span className="text-neutral-400">Security:</span>
-                        <span className="text-emerald-400 font-medium">None (Verified)</span>
+                        <span className="text-emerald-400 font-medium">Verified Link</span>
                       </div>
                     </div>
                   </div>
@@ -581,6 +633,17 @@ export const FinderApp: React.FC<{
                     <FolderOpen className="w-3.5 h-3.5" />
                     <span>Open Folder</span>
                   </button>
+                ) : selectedFile.type === 'link' ? (
+                  <a
+                    href={selectedFile.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
+                  >
+                    <LinkIcon className="w-3.5 h-3.5" />
+                    <span>Open Link</span>
+                    <ExternalLink className="w-3 h-3 ml-auto opacity-70" />
+                  </a>
                 ) : selectedFile.type === 'pdf' ? (
                   <div className="space-y-1.5">
                     <button

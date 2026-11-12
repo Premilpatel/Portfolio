@@ -12,7 +12,7 @@ export interface DesktopIconItem {
   id: string;
   name: string;
   type: 'folder' | 'pdf' | 'doc' | 'app';
-  iconType: 'resume' | 'projects' | 'notion' | 'readme' | 'homelab' | 'github';
+  iconType: 'resume' | 'projects' | 'notion' | 'github';
   action: () => void;
 }
 
@@ -32,7 +32,6 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const desktopItems: DesktopIconItem[] = [
-    // Column 1
     {
       id: 'resume-file',
       name: 'Premil_Patel_Resume.pdf',
@@ -54,30 +53,11 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
       }
     },
     {
-      id: 'readme-doc',
-      name: 'Read me',
-      type: 'doc',
-      iconType: 'readme',
-      action: () => onOpenApp('notes')
-    },
-
-    // Column 2
-    {
-      id: 'homelab',
-      name: 'Blue Team Homelab',
-      type: 'app',
-      iconType: 'homelab',
-      action: () => {
-        onOpenApp('finder');
-        if (onOpenFolder) onOpenFolder('Projects');
-      }
-    },
-    {
       id: 'notion-app',
-      name: 'Notion',
+      name: 'Notion Writeup',
       type: 'app',
       iconType: 'notion',
-      action: () => onOpenApp('notes')
+      action: () => window.open('https://app.notion.com/p/Detection-Monitoring-Homelab-Writeup-2f8ee3aaf9948016a8f1fcdd386f39f2', '_blank')
     },
     {
       id: 'github-shortcut',
@@ -110,14 +90,6 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
           />
         );
 
-      case 'readme':
-        return (
-          <div className="w-11 h-13 rounded-lg bg-white/90 border border-white/40 flex flex-col items-center justify-center shadow-lg relative p-1.5">
-            <FileText className="w-6 h-6 text-neutral-600 mb-0.5" />
-            <span className="text-[8px] font-bold text-neutral-600 tracking-tighter uppercase">TXT</span>
-          </div>
-        );
-
       case 'notion':
         return (
           // eslint-disable-next-line @next/next/no-img-element
@@ -126,13 +98,6 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
             alt="Notion" 
             className="w-12 h-12 rounded-xl object-contain shadow-lg"
           />
-        );
-
-      case 'homelab':
-        return (
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-slate-900 to-indigo-950 border border-indigo-500/40 flex items-center justify-center shadow-lg">
-            <ShieldAlert className="w-6 h-6 text-indigo-400" />
-          </div>
         );
 
       case 'github':
