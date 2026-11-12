@@ -36,7 +36,7 @@ const DOCK_APPS: DockApp[] = [
   {
     id: 'resume',
     name: 'Resume',
-    icon: '/icons/resume-folder.png'
+    icon: '/icons/mac-pdf.png'
   },
   {
     id: 'safari',
