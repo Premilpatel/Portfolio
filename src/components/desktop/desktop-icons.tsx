@@ -12,7 +12,7 @@ export interface DesktopIconItem {
   id: string;
   name: string;
   type: 'folder' | 'pdf' | 'doc' | 'app';
-  iconType: 'resume' | 'projects' | 'notion' | 'github';
+  iconType: 'resume' | 'projects' | 'courses' | 'notion' | 'github';
   action: () => void;
 }
 
@@ -53,6 +53,16 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
       }
     },
     {
+      id: 'courses-folder',
+      name: 'Courses',
+      type: 'folder',
+      iconType: 'courses',
+      action: () => {
+        onOpenApp('finder');
+        if (onOpenFolder) onOpenFolder('Courses');
+      }
+    },
+    {
       id: 'notion-app',
       name: 'Notion Writeup',
       type: 'app',
@@ -86,6 +96,16 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
           <img 
             src="/icons/projects-folder.png" 
             alt="Projects" 
+            className="w-13 h-13 object-contain drop-shadow-md"
+          />
+        );
+
+      case 'courses':
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img 
+            src="/icons/mac-folder-blue.png" 
+            alt="Courses" 
             className="w-13 h-13 object-contain drop-shadow-md"
           />
         );
