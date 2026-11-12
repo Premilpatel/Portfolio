@@ -128,9 +128,9 @@ export const MacOSMenuBar: React.FC<MacOSMenuBarProps> = ({
       { label: 'Forward', shortcut: '⌘]', action: 'go-forward' },
       { type: 'separator' },
       { label: 'Projects', shortcut: '⇧⌘P', action: 'open-projects' },
-      { label: 'Documents / Resume', shortcut: '⇧⌘O', action: 'open-resume' },
+      { label: 'Resume', shortcut: '⇧⌘R', action: 'open-resume' },
       { label: 'Gallery', shortcut: '⇧⌘G', action: 'open-gallery' },
-      { label: 'Terminal', shortcut: '⇧⌘T', action: 'open-terminal' }
+      { label: 'Notes', shortcut: '⇧⌘N', action: 'open-guide' }
     ],
     Window: [
       { label: 'Minimize', shortcut: '⌘M', action: 'minimize-window' },

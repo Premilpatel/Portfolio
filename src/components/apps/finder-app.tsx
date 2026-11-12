@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { 
   Folder, 
   FileText, 
-  Image as ImageIcon, 
   Code2, 
   ExternalLink, 
   ChevronRight, 
@@ -12,16 +11,14 @@ import {
   Grid, 
   List, 
   Search, 
-  Download,
-  Clock,
-  Sparkles,
-  Award,
-  Briefcase,
-  User
+  ShieldCheck,
+  Server,
+  Terminal,
+  Download
 } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/brand-icons';
 
-interface FileItem {
+export interface FileItem {
   id: string;
   name: string;
   type: 'folder' | 'pdf' | 'doc' | 'image' | 'code' | 'link';
@@ -30,136 +27,77 @@ interface FileItem {
   folder?: string;
   content?: string;
   url?: string;
-  previewImage?: string;
 }
 
 const INITIAL_FILES: FileItem[] = [
-  // Folders
+  // Root Folders & Files
   { id: 'f-projects', name: 'Projects', type: 'folder', date: 'Oct 23, 2026', folder: 'root' },
-  { id: 'f-resume', name: 'Resume & Bio', type: 'folder', date: 'Oct 20, 2026', folder: 'root' },
-  { id: 'f-skills', name: 'Skills & Tech', type: 'folder', date: 'Oct 18, 2026', folder: 'root' },
-  { id: 'f-certs', name: 'Certifications', type: 'folder', date: 'Sep 15, 2026', folder: 'root' },
-  { id: 'f-experience', name: 'Experience', type: 'folder', date: 'Aug 10, 2026', folder: 'root' },
-
-  // Resume & Bio Files
   { 
     id: 'doc-resume', 
     name: 'Premil_Patel_Resume.pdf', 
     type: 'pdf', 
-    size: '184 KB', 
-    date: 'Oct 23, 2026', 
-    folder: 'Resume & Bio',
-    content: 'Full Stack Engineer & Creative Developer with expertise in React, Next.js, TypeScript, Node.js, and Modern Web UI. Passionate about crafting high-performance, polished user experiences.'
+    size: '142 KB', 
+    date: 'Oct 2026', 
+    folder: 'root',
+    content: `Premil Patel - Cybersecurity & Software Engineering\nDePaul University (GPA: 4.0/4.0)\n\nExperience:\n• Relativity — Security Engineer Intern (Detection & IR)\n• ComEd — Data Engineer Intern\n• Seva App — Technical Project Manager Intern\n\nContact: patelpremil70@gmail.com | 224-477-3511`
   },
   { 
-    id: 'doc-cover', 
+    id: 'doc-about', 
     name: 'About_Premil.txt', 
     type: 'doc', 
-    size: '2.4 KB', 
-    date: 'Oct 22, 2026', 
-    folder: 'Resume & Bio',
-    content: `Hi! I am Premil Patel.\n\nI build fast, interactive, and beautiful digital experiences. My work spans modern full-stack web applications, responsive user interfaces, and cloud architectures.\n\nKey Strengths:\n• Clean, maintainable TypeScript & React architecture\n• High fidelity UX design & micro-interactions\n• Scalable APIs, databases & full-stack implementations\n• Eager to learn, innovate, and contribute to cutting-edge products.`
+    size: '1.8 KB', 
+    date: 'Oct 2026', 
+    folder: 'root',
+    content: `Premil Patel\nCybersecurity & Software Engineering Student @ DePaul University\n\nExperienced in threat detection pipelines (WIZ, ThreatStream, Sentinel, Sigma rules), enterprise homelabs, data engineering (SQL, Microsoft Fabric, Power BI), and modern web technologies.`
   },
 
-  // Projects Files
+  // Files inside "Projects"
   { 
-    id: 'proj-1', 
-    name: 'Fullstack_SaaS_Platform.ts', 
-    type: 'code', 
-    size: '42 KB', 
-    date: 'Oct 20, 2026', 
+    id: 'proj-homelab', 
+    name: 'Blue_Team_Detection_Homelab.md', 
+    type: 'doc', 
+    size: '34 KB', 
+    date: 'Oct 2026', 
     folder: 'Projects',
-    content: 'An enterprise SaaS dashboard built with Next.js App Router, Tailwind CSS, PostgreSQL, Prisma, and Stripe billing. Features real-time telemetry and user role management.',
-    url: 'https://github.com/Premilpatel/Portfolio'
+    content: `Blue Team Operations & Detection Homelab\n\n• Provisioned & configured virtual machines (Windows, Linux, Domain Controller, Security Server) using VirtualBox to analyze attacker techniques and defensive tooling.\n• Simulated credential brute-forcing & reverse-shell payloads against Active Directory to author Wazuh detection alerts.`,
+    url: 'https://github.com/Premilpatel'
   },
   { 
-    id: 'proj-2', 
-    name: 'macOS_Portfolio_Experience.tsx', 
-    type: 'code', 
-    size: '18 KB', 
-    date: 'Oct 23, 2026', 
+    id: 'proj-network', 
+    name: 'Network_Security_Architecture.md', 
+    type: 'doc', 
+    size: '22 KB', 
+    date: 'Sep 2026', 
     folder: 'Projects',
-    content: 'An interactive macOS desktop simulator with a live dock, window manager, file browser, terminal, and photo gallery.',
-    url: 'https://github.com/Premilpatel/Portfolio'
+    content: `Network Security Architecture & Design\n\n• Designed and implemented a Dual-Path Dual-Layer firewall architecture with segmented DMZ and Intranet networks.\n• Configured NAT/PAT, static routing, and firewall rules to secure public-facing services while isolating internal systems.`
   },
   { 
-    id: 'proj-3', 
-    name: 'AI_Workflow_Automation.py', 
+    id: 'proj-threat-pipeline', 
+    name: 'Threat_Intelligence_Pipeline.py', 
+    type: 'code', 
+    size: '48 KB', 
+    date: 'Aug 2026', 
+    folder: 'Projects',
+    content: `Threat Intelligence Pipeline (Relativity Detection & IR)\n\n• Ingests ~2,000 IOCs/articles daily from WIZ Graph API & ThreatStream API.\n• Filters against threat models and vulnerability data, surfacing ranked findings to Slack.`
+  },
+  { 
+    id: 'proj-portfolio', 
+    name: 'macOS_Portfolio_Website.tsx', 
     type: 'code', 
     size: '28 KB', 
-    date: 'Sep 30, 2026', 
+    date: 'Oct 2026', 
     folder: 'Projects',
-    content: 'LLM agentic automation pipeline with streaming generation, prompt orchestration, and vector search embeddings.',
-    url: 'https://github.com/Premilpatel'
-  },
-  { 
-    id: 'proj-4', 
-    name: '3D_Interactive_Studio.js', 
-    type: 'code', 
-    size: '35 KB', 
-    date: 'Aug 14, 2026', 
-    folder: 'Projects',
-    content: 'WebGL and Three.js interactive 3D model customizer with dynamic lighting and camera physics.',
-    url: 'https://github.com/Premilpatel'
-  },
-
-  // Skills Files
-  { 
-    id: 'skill-frontend', 
-    name: 'Frontend_Mastery.json', 
-    type: 'code', 
-    size: '3.1 KB', 
-    date: 'Oct 15, 2026', 
-    folder: 'Skills & Tech',
-    content: `{\n  "languages": ["TypeScript", "JavaScript", "HTML5", "CSS3/Tailwind"],\n  "frameworks": ["React 19", "Next.js", "Vite", "Vue.js"],\n  "state_and_animation": ["Zustand", "Framer Motion", "GSAP"],\n  "styling": ["Tailwind CSS", "shadcn/ui", "Radix Primitives"]\n}`
-  },
-  { 
-    id: 'skill-backend', 
-    name: 'Backend_And_Cloud.json', 
-    type: 'code', 
-    size: '2.8 KB', 
-    date: 'Oct 15, 2026', 
-    folder: 'Skills & Tech',
-    content: `{\n  "runtime": ["Node.js", "Python", "Go"],\n  "databases": ["PostgreSQL", "MongoDB", "Redis", "Supabase"],\n  "devops_and_tools": ["Docker", "Git/GitHub", "Vercel", "AWS S3/EC2"]\n}`
-  },
-
-  // Certifications Files
-  { 
-    id: 'cert-1', 
-    name: 'AWS_Certified_Cloud_Practitioner.pdf', 
-    type: 'pdf', 
-    size: '240 KB', 
-    date: '2025', 
-    folder: 'Certifications',
-    content: 'Demonstrated overall understanding of cloud concepts, security, architecture, pricing, and support services on Amazon Web Services.'
-  },
-  { 
-    id: 'cert-2', 
-    name: 'Advanced_React_Architecture.pdf', 
-    type: 'pdf', 
-    size: '190 KB', 
-    date: '2026', 
-    folder: 'Certifications',
-    content: 'Advanced patterns in React 19, Server Components, State Optimization, Concurrent Rendering, and Custom Hooks.'
-  },
-
-  // Experience Files
-  { 
-    id: 'exp-1', 
-    name: 'Software_Engineering_Role.doc', 
-    type: 'doc', 
-    size: '4.2 KB', 
-    date: '2025 - Present', 
-    folder: 'Experience',
-    content: 'Built scalable client-facing applications, reduced bundle size by 35%, and led the redesign of core user dashboards with Next.js and Tailwind.'
+    content: `Interactive macOS Yosemite Portfolio\n\n• Built with Next.js 16, TypeScript, Tailwind CSS, and shadcn styling.\n• Authentic cosine magnification dock, draggable window manager, functional Finder, and realistic Apple apps.`,
+    url: 'https://github.com/Premilpatel/Portfolio'
   }
 ];
 
 export const FinderApp: React.FC<{
   onOpenFile?: (file: FileItem) => void;
-}> = ({ onOpenFile }) => {
-  const [currentFolder, setCurrentFolder] = useState<string>('root');
-  const [history, setHistory] = useState<string[]>(['root']);
+  initialFolder?: string;
+}> = ({ onOpenFile, initialFolder = 'root' }) => {
+  const [currentFolder, setCurrentFolder] = useState<string>(initialFolder);
+  const [history, setHistory] = useState<string[]>([initialFolder]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [selectedFile, setSelectedFile] = useState<FileItem | null>(null);
   const [viewMode, setViewMode] = useState<'icons' | 'list'>('icons');
@@ -224,7 +162,7 @@ export const FinderApp: React.FC<{
                 className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'root' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
               >
                 <Folder className="w-3.5 h-3.5 text-blue-400" />
-                <span>All Documents</span>
+                <span>All Files</span>
               </button>
 
               <button
@@ -234,72 +172,43 @@ export const FinderApp: React.FC<{
                 <Code2 className="w-3.5 h-3.5 text-purple-400" />
                 <span>Projects</span>
               </button>
-
-              <button
-                onClick={() => navigateTo('Resume & Bio')}
-                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'Resume & Bio' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
-              >
-                <FileText className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Resume & Bio</span>
-              </button>
-
-              <button
-                onClick={() => navigateTo('Skills & Tech')}
-                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'Skills & Tech' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Skills</span>
-              </button>
-
-              <button
-                onClick={() => navigateTo('Certifications')}
-                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'Certifications' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
-              >
-                <Award className="w-3.5 h-3.5 text-orange-400" />
-                <span>Certifications</span>
-              </button>
-
-              <button
-                onClick={() => navigateTo('Experience')}
-                className={`w-full flex items-center space-x-2 px-2 py-1.5 rounded-md transition-colors ${currentFolder === 'Experience' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
-              >
-                <Briefcase className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Experience</span>
-              </button>
             </div>
           </div>
 
           <div>
             <div className="text-[10px] font-semibold tracking-wider text-neutral-400 uppercase px-2 mb-1.5">
-              Tags
+              Quick Links
             </div>
             <div className="space-y-1 text-xs">
-              <div className="flex items-center space-x-2 px-2 py-1 text-neutral-400 hover:text-white cursor-pointer">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-                <span>Important</span>
-              </div>
-              <div className="flex items-center space-x-2 px-2 py-1 text-neutral-400 hover:text-white cursor-pointer">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                <span>Work</span>
-              </div>
-              <div className="flex items-center space-x-2 px-2 py-1 text-neutral-400 hover:text-white cursor-pointer">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                <span>Active</span>
-              </div>
+              <a 
+                href="https://github.com/Premilpatel"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 px-2 py-1.5 rounded-md hover:bg-white/10 text-neutral-300 transition-colors"
+              >
+                <GithubIcon className="w-3.5 h-3.5 text-neutral-300" />
+                <span>GitHub Profile</span>
+              </a>
+
+              <a 
+                href="https://www.linkedin.com/in/premilpatel"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 px-2 py-1.5 rounded-md hover:bg-white/10 text-neutral-300 transition-colors"
+              >
+                <span className="w-3.5 h-3.5 bg-blue-600 text-[10px] font-bold rounded flex items-center justify-center text-white">in</span>
+                <span>LinkedIn</span>
+              </a>
             </div>
           </div>
         </div>
 
-        {/* GitHub link in sidebar */}
-        <a 
-          href="https://github.com/Premilpatel" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-white/5 hover:bg-white/10 text-xs text-neutral-300 transition-colors"
-        >
-          <GithubIcon className="w-3.5 h-3.5" />
-          <span>Premil on GitHub</span>
-        </a>
+        {/* Contact info card at bottom of sidebar */}
+        <div className="p-2.5 bg-white/5 rounded-xl border border-white/10 text-[11px] text-neutral-300 space-y-1">
+          <div className="font-semibold text-white">Premil Patel</div>
+          <div className="text-neutral-400 text-[10px] truncate">patelpremil70@gmail.com</div>
+          <div className="text-neutral-400 text-[10px]">224-477-3511</div>
+        </div>
       </div>
 
       {/* Main Content Area */}
@@ -327,13 +236,12 @@ export const FinderApp: React.FC<{
 
             {/* Folder Name Breadcrumb */}
             <span className="text-xs font-semibold text-white">
-              {currentFolder === 'root' ? 'Portfolio Root' : currentFolder}
+              {currentFolder === 'root' ? 'Macintosh HD / Users / premil' : `Macintosh HD / Users / premil / ${currentFolder}`}
             </span>
           </div>
 
           {/* Right Toolbar Controls */}
           <div className="flex items-center space-x-3">
-            {/* View Switcher */}
             <div className="flex items-center bg-white/10 rounded-lg p-0.5">
               <button
                 onClick={() => setViewMode('icons')}
@@ -351,7 +259,6 @@ export const FinderApp: React.FC<{
               </button>
             </div>
 
-            {/* Search Input */}
             <div className="relative">
               <Search className="w-3 h-3 text-neutral-400 absolute left-2.5 top-2" />
               <input
@@ -374,7 +281,7 @@ export const FinderApp: React.FC<{
                 <span>This folder is empty</span>
               </div>
             ) : viewMode === 'icons' ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {currentFiles.map((file) => {
                   const isSelected = selectedFile?.id === file.id;
                   return (
@@ -387,24 +294,22 @@ export const FinderApp: React.FC<{
                       {/* Icon */}
                       <div className="w-14 h-14 flex items-center justify-center mb-1">
                         {file.type === 'folder' && (
-                          <div className="relative">
-                            <Folder className="w-12 h-12 text-blue-400 fill-blue-500/30" />
-                          </div>
+                          <Folder className="w-12 h-12 text-[#3dabf5] fill-[#3dabf5]/40" />
                         )}
                         {file.type === 'pdf' && (
-                          <div className="w-10 h-12 rounded bg-red-600/20 border border-red-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-red-300">
+                          <div className="w-10 h-12 rounded bg-red-600/20 border border-red-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-red-300 shadow">
                             <FileText className="w-5 h-5 text-red-400 mb-0.5" />
                             PDF
                           </div>
                         )}
                         {file.type === 'code' && (
-                          <div className="w-10 h-12 rounded bg-purple-600/20 border border-purple-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-purple-300">
+                          <div className="w-10 h-12 rounded bg-purple-600/20 border border-purple-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-purple-300 shadow">
                             <Code2 className="w-5 h-5 text-purple-400 mb-0.5" />
                             CODE
                           </div>
                         )}
                         {file.type === 'doc' && (
-                          <div className="w-10 h-12 rounded bg-sky-600/20 border border-sky-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-sky-300">
+                          <div className="w-10 h-12 rounded bg-sky-600/20 border border-sky-500/40 flex flex-col items-center justify-center text-[9px] font-bold text-sky-300 shadow">
                             <FileText className="w-5 h-5 text-sky-400 mb-0.5" />
                             DOC
                           </div>
@@ -439,7 +344,7 @@ export const FinderApp: React.FC<{
                       >
                         <div className="col-span-6 flex items-center space-x-2 truncate">
                           {file.type === 'folder' ? (
-                            <Folder className="w-4 h-4 text-blue-400 shrink-0" />
+                            <Folder className="w-4 h-4 text-[#3dabf5] shrink-0" />
                           ) : (
                             <FileText className="w-4 h-4 text-neutral-400 shrink-0" />
                           )}
@@ -475,17 +380,29 @@ export const FinderApp: React.FC<{
                 )}
               </div>
 
-              {selectedFile.url && (
-                <a
-                  href={selectedFile.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full mt-4 py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors"
-                >
-                  <span>Open on GitHub</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              )}
+              <div className="space-y-2 mt-4">
+                {selectedFile.type === 'pdf' && (
+                  <button
+                    onClick={() => onOpenFile && onOpenFile(selectedFile)}
+                    className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors"
+                  >
+                    <span>Open Full Resume</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </button>
+                )}
+
+                {selectedFile.url && (
+                  <a
+                    href={selectedFile.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 px-3 bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors border border-white/10"
+                  >
+                    <span>View on GitHub</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
+              </div>
             </div>
           )}
         </div>

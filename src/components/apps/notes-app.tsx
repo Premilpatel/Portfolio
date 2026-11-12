@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FileText, Plus, Trash2, Search, Calendar } from 'lucide-react';
+import { Search, Calendar, Shield, GraduationCap, Briefcase, Mail } from 'lucide-react';
 
 interface Note {
   id: string;
   title: string;
   date: string;
+  category: string;
   preview: string;
   body: string;
 }
@@ -14,79 +15,80 @@ interface Note {
 const INITIAL_NOTES: Note[] = [
   {
     id: 'n1',
-    title: '👋 Welcome to my Portfolio',
-    date: 'Oct 23, 2026',
-    preview: 'Hi! I am Premil Patel. This portfolio is built as an interactive...',
-    body: `Hi there! Welcome to my interactive macOS portfolio website.
+    title: '👋 About Premil Patel',
+    date: 'Oct 2026',
+    category: 'Profile',
+    preview: 'B.S. + M.S. in Cybersecurity student at DePaul University (GPA 4.0)...',
+    body: `Premil Patel
+Chicago, IL • 224-477-3511 • patelpremil70@gmail.com
+LinkedIn: linkedin.com/in/premilpatel
+GitHub: github.com/Premilpatel
 
-I designed this project to demonstrate creative front-end architecture, clean component design, and attention to detail. Every window can be moved, minimized, or maximized, and the dock features authentic magnification and bounce animations.
-
-Feel free to browse through the Finder folders, inspect my photo gallery, test the Terminal with commands like 'skills' and 'projects', and view my resume!`
+Education:
+DePaul University | Chicago, IL (Sep. 2024 - June 2028)
+• B.S. + M.S. in Cybersecurity, Minor in Computer Science | GPA: 4.0/4.0
+• Coursework: IR & Forensics, Security Testing & Assessment, Security Automation, Computer Systems, Database Systems
+• Honors & Awards: Presidential Scholar, Double Demon Scholarship, Future Forward Scholarship, Blue Demon Impact Award`
   },
   {
     id: 'n2',
-    title: '🛠️ Technical Skills & Proficiencies',
-    date: 'Oct 20, 2026',
-    preview: 'Languages: TypeScript, JavaScript, Python, HTML/CSS...',
-    body: `Comprehensive Technical Skills Breakdown:
+    title: '🛡️ Blue Team Homelab Architecture',
+    date: 'Oct 2026',
+    category: 'Projects',
+    preview: 'Enterprise lab environment with Active Directory, Windows, Linux, and Wazuh...',
+    body: `Blue Team Operations & Detection Homelab
 
-Frontend Development:
-• React 19 & Next.js App Router
-• TypeScript & Modern JavaScript (ESNext)
-• Tailwind CSS, shadcn/ui, Radix UI Primitives
-• Responsive Design, CSS Grid, Flexbox, Micro-animations
+Overview:
+Provisioned and configured virtual machines (Windows, Linux, Domain Controller, security server) using VirtualBox to support a simulated enterprise lab environment to analyze attacker techniques and defensive controls and tools.
 
-Backend & Systems:
-• Node.js, Express, RESTful APIs, GraphQL
-• Python, FastAPI
-• PostgreSQL, MongoDB, Redis, Prisma ORM
-• Authentication (OAuth, JWT, NextAuth)
-
-DevOps & Engineering Practices:
-• Git, GitHub Actions, CI/CD
-• Docker & Containerization
-• Vercel, AWS (S3, CloudFront, EC2)
-• Unit & Integration Testing, Web Performance Optimization`
+Highlights:
+• Simulated credential brute-forcing and reverse-shell payloads against Active Directory.
+• Configured Wazuh SIEM & agent telemetry to capture endpoint events and author alert rules.
+• Evaluated Sigma detection logic and tested alert efficacy against credential dumping and persistence techniques.`
   },
   {
     id: 'n3',
-    title: '🚀 Featured Project Highlights',
-    date: 'Oct 18, 2026',
-    preview: '1. macOS Portfolio Experience 2. Enterprise SaaS Platform...',
-    body: `Featured Projects:
+    title: '💼 Professional Experience Highlights',
+    date: 'Sep 2026',
+    category: 'Experience',
+    preview: 'Relativity (Detection & IR), ComEd (Data Engineer), Seva App (Technical PM)...',
+    body: `Work Experience:
 
-1. Interactive macOS Desktop Portfolio
-• Tech: Next.js 16, TypeScript, Tailwind CSS, Framer Motion
-• Highlights: Authentic cosine magnification dock, draggable window manager, functional Finder file explorer, Terminal simulator.
+1. Relativity — Security Engineer Intern (Detection & IR) | June 2026 – Aug. 2026
+• Developed a full-stack threat intelligence pipeline ingesting ~2,000 IOCs/articles daily from WIZ Graph API & ThreatStream API.
+• Surfaced ranked findings directly to incident managers via Slack.
+• Tuned Sigma detection rules in Microsoft Sentinel, Defender, and ThreatStream.
+• Triaged and resolved 30+ low-to-high security incidents; drafted SOC playbooks/SOPs.
 
-2. Enterprise SaaS Platform & Analytics
-• Tech: Next.js, PostgreSQL, Prisma, Stripe, Tailwind
-• Highlights: Multi-tenant dashboard, real-time metrics, role-based authentication.
+2. ComEd — Data Engineer Intern (Operational Analytics) | June 2025 – Aug. 2025
+• Built SharePoint app & Power BI dashboard for arranger reallocation, projecting $40K in savings.
+• Modified 1.5M+ records using SQL scripts and managed data warehouse access control.
+• Automated data pipelines with Microsoft Fabric & Power Apps.
 
-3. AI Workflow & Agent Chaining
-• Tech: Python, FastAPI, LangChain, Vector Search
-• Highlights: Streamed generation, multimodal pipelines, task automation.`
+3. Seva App — Technical Project Manager Intern (Software Dev) | Sept. 2024 – May 2025
+• Implemented Role-Based Access Control (RBAC) and led zero-downtime CMS migration.
+• Directed a team of 6 developers and product owners across bi-weekly sprints.`
   },
   {
     id: 'n4',
-    title: '📫 Contact & Social Links',
-    date: 'Oct 15, 2026',
-    preview: 'GitHub: Premilpatel, Email: premilpatel.dev@gmail.com...',
-    body: `Get in Touch:
+    title: '🎹 Musical Leadership & Associations',
+    date: 'Aug 2026',
+    category: 'Leadership',
+    preview: 'Lead Keyboardist at SMK (12,000+ audience), Security Daemons Club at DePaul...',
+    body: `Extracurricular & Leadership:
 
-I am open to software engineering roles, collaborative projects, and freelance opportunities.
+• Lead Keyboardist @ SMK (May 2021 – Present)
+  Performing Indian classical music internationally across the US and India, including a concert for a live audience of 12,000+.
+  Coordinating with a core team of 5 musicians across 100+ live religious gatherings and events, while managing sound setup, mixers, speakers, and acoustic equipment.
 
-• GitHub: https://github.com/Premilpatel
-• Repository: https://github.com/Premilpatel/Portfolio
-• Email: premilpatel.dev@gmail.com
-• Location: United States
-
-Feel free to reach out anytime!`
+• Security Daemons Club @ DePaul (Sept. 2024 – Present)
+  Active participant in CCDC practices, workshops, and competitions including Hivestorm.
+  Engaged in CTF challenges spanning web exploitation, cryptography, open-source intelligence, and forensics.`
   }
 ];
 
 export const NotesApp: React.FC = () => {
-  const [notes, setNotes] = useState<Note[]>(INITIAL_NOTES);
+  const [notes] = useState<Note[]>(INITIAL_NOTES);
   const [activeNoteId, setActiveNoteId] = useState<string>('n1');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -100,7 +102,7 @@ export const NotesApp: React.FC = () => {
   return (
     <div className="flex h-full w-full bg-neutral-900 text-neutral-100 select-none">
       {/* Notes Sidebar */}
-      <div className="w-56 bg-neutral-950/70 border-r border-white/10 flex flex-col shrink-0">
+      <div className="w-60 bg-neutral-950/70 border-r border-white/10 flex flex-col shrink-0">
         <div className="p-3 border-b border-white/10">
           <div className="relative">
             <Search className="w-3 h-3 text-neutral-400 absolute left-2.5 top-2.5" />
@@ -124,7 +126,7 @@ export const NotesApp: React.FC = () => {
                 className={`p-3 cursor-pointer transition-colors ${isActive ? 'bg-amber-500/20 text-white' : 'hover:bg-white/5 text-neutral-300'}`}
               >
                 <div className="font-semibold text-xs truncate">{note.title}</div>
-                <div className="text-[10px] text-amber-400/80 mt-0.5">{note.date}</div>
+                <div className="text-[10px] text-amber-400/80 mt-0.5">{note.date} • {note.category}</div>
                 <div className="text-[11px] text-neutral-400 truncate mt-1 leading-snug">
                   {note.preview}
                 </div>

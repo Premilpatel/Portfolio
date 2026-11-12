@@ -7,84 +7,78 @@ import {
   ChevronLeft, 
   ChevronRight, 
   X, 
-  Layers, 
   Sparkles, 
-  Palette, 
   Laptop,
+  Shield,
+  Music2,
+  Building2,
   Maximize2
 } from 'lucide-react';
 
 interface GalleryItem {
   id: string;
   title: string;
-  category: 'web' | 'ui' | '3d' | 'mobile';
+  category: 'security' | 'tech' | 'music' | 'chicago';
   image: string;
   description: string;
   tags: string[];
-  link?: string;
   date: string;
 }
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 'gal-1',
-    title: 'Modern Cloud Analytics Dashboard',
-    category: 'web',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
-    description: 'Comprehensive telemetry and data visualization platform for real-time cloud resource monitoring and analytics.',
-    tags: ['React', 'Next.js', 'Tailwind', 'Recharts'],
-    link: 'https://github.com/Premilpatel/Portfolio',
+    title: 'Blue Team Threat Detection Lab',
+    category: 'security',
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1400&q=85',
+    description: 'Enterprise virtualized security lab analyzing attacker telemetry, Active Directory brute-force detection, and Wazuh alert tuning.',
+    tags: ['Cybersecurity', 'Wazuh', 'Active Directory', 'VirtualBox'],
     date: 'Oct 2026'
   },
   {
     id: 'gal-2',
-    title: 'macOS Yosemite Aesthetic Interface',
-    category: 'ui',
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
-    description: 'Pixel-perfect replication of Apple macOS desktop ecosystem with interactive Dock, Finder, Window Manager, and live app simulations.',
-    tags: ['Next.js 16', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    link: 'https://github.com/Premilpatel/Portfolio',
-    date: 'Oct 2026'
+    title: 'Cyber Threat Intelligence Pipeline',
+    category: 'security',
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1400&q=85',
+    description: 'Automated threat ingestion pipeline evaluating ~2,000 daily IOCs across WIZ and ThreatStream with Slack incident routing.',
+    tags: ['Threat Intel', 'Sentinel', 'Sigma Rules', 'Python'],
+    date: 'Relativity 2026'
   },
   {
     id: 'gal-3',
-    title: '3D Cybernetic Interactive Canvas',
-    category: '3d',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-    description: 'Experimental WebGL 3D procedural mesh generator with dynamic lighting, shader materials, and user orbit controls.',
-    tags: ['Three.js', 'WebGL', 'GLSL Shaders', 'JavaScript'],
-    link: 'https://github.com/Premilpatel',
-    date: 'Aug 2026'
+    title: 'Chicago Skyline & Tech Community',
+    category: 'chicago',
+    image: 'https://images.unsplash.com/photo-1494522855154-9297ac14b55f?auto=format&fit=crop&w=1400&q=85',
+    description: 'DePaul University Loop Campus & downtown Chicago. Cybersecurity testing, CCDC competitions, and research labs.',
+    tags: ['Chicago', 'DePaul University', 'Cybersecurity Daemons'],
+    date: '2024 - 2028'
   },
   {
     id: 'gal-4',
-    title: 'Fintech Mobile Banking Experience',
-    category: 'mobile',
-    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80',
-    description: 'Sleek dark-mode financial dashboard showcasing instant transfers, crypto asset trackers, and biometric auth flows.',
-    tags: ['React Native', 'TypeScript', 'Tailwind', 'Node.js'],
-    link: 'https://github.com/Premilpatel',
-    date: 'Jul 2026'
+    title: 'Minimalist Engineering Workspace',
+    category: 'tech',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=85',
+    description: 'High-focus software development and security architecture environment running Linux, macOS, and containerized tools.',
+    tags: ['Development', 'Next.js', 'TypeScript', 'Linux'],
+    date: '2026'
   },
   {
     id: 'gal-5',
-    title: 'AI Generative Workflow Platform',
-    category: 'web',
-    image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
-    description: 'Node-based visual AI agent pipeline builder allowing users to chain multimodal prompts and automated workflows.',
-    tags: ['React Flow', 'FastAPI', 'Python', 'Tailwind CSS'],
-    link: 'https://github.com/Premilpatel',
-    date: 'Jun 2026'
+    title: 'Live Musical Performance & Synthesis',
+    category: 'music',
+    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1400&q=85',
+    description: 'Lead Keyboardist at SMK performing Indian classical music internationally across the US and India for audiences of up to 12,000+.',
+    tags: ['Music', 'SMK', 'Lead Keyboardist', 'Live Sound'],
+    date: '2021 - Present'
   },
   {
     id: 'gal-6',
-    title: 'Minimalist Portfolio Typography & Art',
-    category: 'ui',
-    image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80',
-    description: 'Clean editorial layout emphasizing typography, generous whitespace, and fluid layout animations.',
-    tags: ['Next.js', 'CSS Grid', 'Typography'],
-    link: 'https://github.com/Premilpatel',
-    date: 'May 2026'
+    title: 'Network Security Architecture & DMZ',
+    category: 'security',
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=85',
+    description: 'Dual-Path Dual-Layer firewall design with segmented DMZ and Intranet isolation, NAT/PAT, and access control policies.',
+    tags: ['Firewall', 'Network Security', 'DMZ', 'Routing'],
+    date: '2026'
   }
 ];
 
@@ -121,7 +115,7 @@ export const GalleryApp: React.FC = () => {
   return (
     <div className="flex h-full w-full bg-neutral-900 text-neutral-100 select-none">
       {/* Left Sidebar */}
-      <div className="w-48 bg-neutral-950/70 border-r border-white/10 p-3 flex flex-col justify-between shrink-0">
+      <div className="w-52 bg-neutral-950/70 border-r border-white/10 p-3 flex flex-col justify-between shrink-0">
         <div className="space-y-4">
           <div className="text-[10px] font-semibold tracking-wider text-neutral-400 uppercase px-2 mb-1.5">
             Photos & Albums
@@ -129,49 +123,49 @@ export const GalleryApp: React.FC = () => {
           <div className="space-y-0.5 text-xs">
             <button
               onClick={() => setActiveCategory('all')}
-              className={`w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg transition-colors ${activeCategory === 'all' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+              className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-lg transition-colors ${activeCategory === 'all' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
             >
-              <ImageIcon className="w-3.5 h-3.5" />
-              <span>All Media ({GALLERY_ITEMS.length})</span>
+              <ImageIcon className="w-4 h-4 text-blue-400" />
+              <span>All Photos ({GALLERY_ITEMS.length})</span>
             </button>
 
             <button
-              onClick={() => setActiveCategory('web')}
-              className={`w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg transition-colors ${activeCategory === 'web' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+              onClick={() => setActiveCategory('security')}
+              className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-lg transition-colors ${activeCategory === 'security' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
             >
-              <Laptop className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Web Apps</span>
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span>Cybersecurity</span>
             </button>
 
             <button
-              onClick={() => setActiveCategory('ui')}
-              className={`w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg transition-colors ${activeCategory === 'ui' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+              onClick={() => setActiveCategory('tech')}
+              className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-lg transition-colors ${activeCategory === 'tech' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
             >
-              <Palette className="w-3.5 h-3.5 text-purple-400" />
-              <span>UI / UX Designs</span>
+              <Laptop className="w-4 h-4 text-purple-400" />
+              <span>Tech & Projects</span>
             </button>
 
             <button
-              onClick={() => setActiveCategory('3d')}
-              className={`w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg transition-colors ${activeCategory === '3d' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+              onClick={() => setActiveCategory('music')}
+              className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-lg transition-colors ${activeCategory === 'music' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>3D & Creative</span>
+              <Music2 className="w-4 h-4 text-amber-400" />
+              <span>Music & SMK</span>
             </button>
 
             <button
-              onClick={() => setActiveCategory('mobile')}
-              className={`w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg transition-colors ${activeCategory === 'mobile' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
+              onClick={() => setActiveCategory('chicago')}
+              className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-lg transition-colors ${activeCategory === 'chicago' ? 'bg-blue-600 text-white font-medium' : 'hover:bg-white/10 text-neutral-300'}`}
             >
-              <Layers className="w-3.5 h-3.5 text-pink-400" />
-              <span>Mobile Platforms</span>
+              <Building2 className="w-4 h-4 text-cyan-400" />
+              <span>Chicago & Campus</span>
             </button>
           </div>
         </div>
 
-        <div className="p-2.5 bg-white/5 rounded-xl border border-white/10 text-[11px] text-neutral-400">
-          <div className="font-semibold text-white mb-0.5">Showcase Gallery</div>
-          Click any visual card to preview in full resolution.
+        <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-[11px] text-neutral-400">
+          <div className="font-semibold text-white mb-0.5">High-Res Gallery</div>
+          Click any card to open full-screen preview.
         </div>
       </div>
 
@@ -193,10 +187,10 @@ export const GalleryApp: React.FC = () => {
                 />
               </div>
 
-              <div className="p-3 bg-neutral-900/90 backdrop-blur-md">
+              <div className="p-3.5 bg-neutral-900/90 backdrop-blur-md">
                 <div className="flex items-center justify-between mb-1">
                   <h3 className="font-semibold text-xs text-white truncate">{item.title}</h3>
-                  <span className="text-[10px] text-neutral-400 shrink-0">{item.date}</span>
+                  <span className="text-[10px] text-neutral-400 shrink-0 ml-1">{item.date}</span>
                 </div>
                 <p className="text-[11px] text-neutral-400 line-clamp-2 leading-relaxed mb-2">
                   {item.description}
@@ -222,7 +216,7 @@ export const GalleryApp: React.FC = () => {
       {selectedImage && (
         <div 
           onClick={() => setSelectedImage(null)}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
@@ -248,7 +242,6 @@ export const GalleryApp: React.FC = () => {
                 className="max-h-full max-w-full object-contain"
               />
 
-              {/* Prev / Next Arrows */}
               <button
                 onClick={handlePrev}
                 className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors"
@@ -277,18 +270,6 @@ export const GalleryApp: React.FC = () => {
                   ))}
                 </div>
               </div>
-
-              {selectedImage.link && (
-                <a
-                  href={selectedImage.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-medium flex items-center space-x-1.5 shrink-0 transition-colors"
-                >
-                  <span>View Project</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              )}
             </div>
           </div>
         </div>
