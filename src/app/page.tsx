@@ -85,7 +85,7 @@ const DOCK_APPS: DockApp[] = [
 
 export default function Home() {
   const [windows, setWindows] = useState<Record<string, WindowState>>({
-    finder: { id: 'finder', isOpen: true, isMinimized: false, zIndex: 10 },
+    finder: { id: 'finder', isOpen: false, isMinimized: false, zIndex: 10 },
     resume: { id: 'resume', isOpen: false, isMinimized: false, zIndex: 11 },
     gallery: { id: 'gallery', isOpen: false, isMinimized: false, zIndex: 12 },
     safari: { id: 'safari', isOpen: false, isMinimized: false, zIndex: 13 },
