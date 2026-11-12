@@ -27,6 +27,15 @@ interface GalleryItem {
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
+    id: 'gal-homelab-arch',
+    title: 'Blue Team Enterprise Homelab Architecture Diagram',
+    category: 'security',
+    image: '/homelab-architecture.jpg',
+    description: 'Comprehensive enterprise network security topology: pfSense firewall, Active Directory domain controller, Wazuh SIEM & EDR, Tenable scanner, Cisco CML, and Raspberry Pi honeypots.',
+    tags: ['Network Topology', 'pfSense', 'Wazuh SIEM', 'Active Directory'],
+    date: 'Nov 2026'
+  },
+  {
     id: 'gal-1',
     title: 'Blue Team Threat Detection Lab',
     category: 'security',

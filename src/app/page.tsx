@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Search, Download, ExternalLink } from 'lucide-react';
 import MacOSMenuBar from '@/components/ui/mac-os-menu-bar';
 import MacOSDock, { type DockApp } from '@/components/ui/mac-os-dock';
 import DesktopIcons from '@/components/desktop/desktop-icons';
@@ -49,11 +50,6 @@ const DOCK_APPS: DockApp[] = [
     icon: 'https://cdn.21st.dev/assets/mirror/45/45c61147b702b2765802969df55878aa5f69e27abe656174339dc661d0f9a31d.png'
   },
   {
-    id: 'notes',
-    name: 'Notes',
-    icon: 'https://cdn.21st.dev/assets/mirror/cb/cbfa4e5db383bbb86683edc2f7d309e9fd7000d07833f6449837be51b77558fa.png'
-  },
-  {
     id: 'notion',
     name: 'Notion',
     icon: '/icons/notion.png'
@@ -76,7 +72,7 @@ const DOCK_APPS: DockApp[] = [
   {
     id: 'github',
     name: 'GitHub',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg'
+    icon: '/icons/github-mac.png'
   }
 ];
 
@@ -97,6 +93,7 @@ export default function Home() {
   const [aboutMacOpen, setAboutMacOpen] = useState(false);
   const [spotlightOpen, setSpotlightOpen] = useState(false);
   const [spotlightSearch, setSpotlightSearch] = useState('');
+  const [previewImage, setPreviewImage] = useState<{ src: string; title: string } | null>(null);
 
   // Brightness and Theme state
   const [brightness, setBrightness] = useState<number>(100);
@@ -286,6 +283,7 @@ export default function Home() {
           openApp('finder');
         }}
         onOpenResume={() => openApp('resume')}
+        onOpenImage={(src, title) => setPreviewImage({ src, title: title || 'Diagram Preview' })}
         isDarkMode={isDarkMode}
       />
 
@@ -311,7 +309,7 @@ export default function Home() {
             if (file.type === 'pdf' || file.id === 'doc-resume') {
               openApp('resume');
             } else if (file.type === 'image') {
-              openApp('gallery');
+              setPreviewImage({ src: file.url || '/homelab-architecture.jpg', title: file.name });
             } else {
               openApp('notes');
             }
@@ -444,6 +442,57 @@ export default function Home() {
         </div>
       </MacWindow>
 
+      {/* Image Preview / Quick Look Window */}
+      {previewImage && (
+        <MacWindow
+          id="image-preview"
+          title={`${previewImage.title} — Preview`}
+          icon="/icons/mac-pdf.png"
+          isOpen={true}
+          isMinimized={false}
+          zIndex={topZIndex + 5}
+          initialPosition={{ x: 100, y: 55 }}
+          initialSize={{ width: 920, height: 620 }}
+          onClose={() => setPreviewImage(null)}
+          onMinimize={() => setPreviewImage(null)}
+          onFocus={() => setTopZIndex(prev => prev + 1)}
+          isDarkMode={isDarkMode}
+        >
+          <div className="h-full w-full bg-[#1e1e1e] flex flex-col overflow-hidden">
+            <div className="h-10 bg-[#252525] border-b border-white/10 px-4 flex items-center justify-between text-xs text-neutral-300 select-none">
+              <span className="font-semibold text-white truncate max-w-sm">{previewImage.title}</span>
+              <div className="flex items-center space-x-2.5">
+                <a
+                  href={previewImage.src}
+                  download={previewImage.title}
+                  className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-md text-white text-xs flex items-center gap-1.5 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download</span>
+                </a>
+                <a
+                  href={previewImage.src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 hover:bg-white/10 rounded-md text-neutral-300 hover:text-white"
+                  title="Open full size"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+            <div className="flex-1 overflow-auto p-4 flex items-center justify-center bg-[#141414]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={previewImage.src}
+                alt={previewImage.title}
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10"
+              />
+            </div>
+          </div>
+        </MacWindow>
+      )}
+
       {/* "About This Mac" Modal */}
       <AboutMacModal
         isOpen={aboutMacOpen}
@@ -461,12 +510,11 @@ export default function Home() {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-lg bg-neutral-900/90 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl p-3 text-white animate-in zoom-in-95 duration-150"
           >
-            <div className="flex items-center space-x-3 px-2 py-1">
-              <span className="text-neutral-400">🔍</span>
+            <div className="flex items-center space-x-3 px-3 py-1">
               <input
                 type="text"
                 autoFocus
-                placeholder="Spotlight Search (type 'resume', 'projects', 'safari', 'notion'...)"
+                placeholder="Spotlight Search (type 'resume', 'projects', 'courses', 'safari')..."
                 value={spotlightSearch}
                 onChange={(e) => setSpotlightSearch(e.target.value)}
                 onKeyDown={(e) => {

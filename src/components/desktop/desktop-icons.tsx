@@ -11,7 +11,7 @@ import { GithubIcon } from '@/components/ui/brand-icons';
 export interface DesktopIconItem {
   id: string;
   name: string;
-  type: 'folder' | 'pdf' | 'doc' | 'app';
+  type: 'folder' | 'pdf' | 'doc' | 'app' | 'image';
   iconType: 'resume' | 'projects' | 'courses' | 'notion' | 'github';
   action: () => void;
 }
@@ -20,6 +20,7 @@ interface DesktopIconsProps {
   onOpenApp: (appId: string) => void;
   onOpenFolder?: (folderName: string) => void;
   onOpenResume?: () => void;
+  onOpenImage?: (src: string, title?: string) => void;
   isDarkMode?: boolean;
 }
 
@@ -27,6 +28,7 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
   onOpenApp,
   onOpenFolder,
   onOpenResume,
+  onOpenImage,
   isDarkMode = true
 }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -40,6 +42,16 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
       action: () => {
         if (onOpenResume) onOpenResume();
         else onOpenApp('resume');
+      }
+    },
+    {
+      id: 'homelab-diagram-file',
+      name: 'Homelab_Architecture.jpg',
+      type: 'image',
+      iconType: 'resume',
+      action: () => {
+        if (onOpenImage) onOpenImage('/homelab-architecture.jpg', 'Homelab_Architecture.jpg');
+        else onOpenApp('gallery');
       }
     },
     {
@@ -85,8 +97,8 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
           // eslint-disable-next-line @next/next/no-img-element
           <img 
             src="/icons/mac-pdf.png" 
-            alt="Resume PDF" 
-            className="w-12 h-14 object-contain drop-shadow-md"
+            alt={item.name} 
+            className="w-12 h-14 object-contain drop-shadow-md group-hover:scale-105 transition-transform"
           />
         );
 
@@ -96,7 +108,7 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
           <img 
             src="/icons/projects-folder.png" 
             alt="Projects" 
-            className="w-13 h-13 object-contain drop-shadow-md"
+            className="w-13 h-13 object-contain drop-shadow-md group-hover:scale-105 transition-transform"
           />
         );
 
@@ -106,7 +118,7 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
           <img 
             src="/icons/mac-folder-blue.png" 
             alt="Courses" 
-            className="w-13 h-13 object-contain drop-shadow-md"
+            className="w-13 h-13 object-contain drop-shadow-md group-hover:scale-105 transition-transform"
           />
         );
 
@@ -116,15 +128,18 @@ export const DesktopIcons: React.FC<DesktopIconsProps> = ({
           <img 
             src="/icons/notion.png" 
             alt="Notion" 
-            className="w-12 h-12 rounded-xl object-contain shadow-lg"
+            className="w-12 h-12 rounded-xl object-contain shadow-lg group-hover:scale-105 transition-transform"
           />
         );
 
       case 'github':
         return (
-          <div className="w-12 h-12 rounded-xl bg-neutral-900 border border-white/20 flex items-center justify-center shadow-lg">
-            <GithubIcon className="w-6 h-6 text-white" />
-          </div>
+          // eslint-disable-next-line @next/next/no-img-element
+          <img 
+            src="/icons/github-mac.png" 
+            alt="GitHub" 
+            className="w-13 h-13 object-contain drop-shadow-md group-hover:scale-105 transition-transform"
+          />
         );
 
       default:

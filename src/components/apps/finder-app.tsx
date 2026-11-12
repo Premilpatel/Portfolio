@@ -93,6 +93,21 @@ const INITIAL_FILES: FileItem[] = [
     folder: 'root'
   },
   { 
+    id: 'img-homelab-diagram', 
+    name: 'Homelab_Architecture.jpg', 
+    type: 'image', 
+    kind: 'JPEG Image Diagram',
+    size: '110 KB', 
+    fullSize: '110,245 bytes on disk',
+    date: 'Nov 12, 2026', 
+    createdDate: 'November 12, 2026',
+    modifiedDate: 'November 12, 2026',
+    lastOpened: 'Today at 1:00 AM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil',
+    url: '/homelab-architecture.jpg',
+    folder: 'root' 
+  },
+  { 
     id: 'doc-about', 
     name: 'About_Premil.txt', 
     type: 'doc', 
@@ -234,6 +249,21 @@ const INITIAL_FILES: FileItem[] = [
     author: 'Premil Patel',
     folder: 'Projects',
     url: 'https://github.com/Premilpatel/Portfolio'
+  },
+  { 
+    id: 'proj-homelab-diagram', 
+    name: 'Homelab_Architecture.jpg', 
+    type: 'image', 
+    kind: 'JPEG Image Diagram',
+    size: '110 KB', 
+    fullSize: '110,245 bytes on disk',
+    date: 'Nov 12, 2026', 
+    createdDate: 'November 12, 2026',
+    modifiedDate: 'November 12, 2026',
+    lastOpened: 'Today at 1:00 AM',
+    whereLocation: 'Macintosh HD ▸ Users ▸ premil ▸ Projects',
+    url: '/homelab-architecture.jpg',
+    folder: 'Projects' 
   },
 
   // ==============================
@@ -1044,6 +1074,10 @@ export const FinderApp: React.FC<{
       );
     }
     return file.folder === currentFolder;
+  }).sort((a, b) => {
+    if (a.type === 'folder' && b.type !== 'folder') return -1;
+    if (a.type !== 'folder' && b.type === 'folder') return 1;
+    return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
   });
 
   const handleItemDoubleClick = (item: FileItem) => {
@@ -1281,13 +1315,12 @@ export const FinderApp: React.FC<{
             </div>
 
             <div className="relative">
-              <Search className="w-3 h-3 text-neutral-400 absolute left-2.5 top-2" />
               <input
                 type="text"
-                placeholder="Search courses or files..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-36 focus:w-48 transition-all h-7 bg-white/10 rounded-md pl-7 pr-2 text-xs text-white placeholder-neutral-400 outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-32 focus:w-44 transition-all h-7 bg-white/10 rounded-md px-3 text-xs text-white placeholder-neutral-400 outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -1337,12 +1370,12 @@ export const FinderApp: React.FC<{
                             className="w-12 h-14 object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
                           />
                         ) : file.type === 'course' ? (
-                          <div className="w-12 h-14 rounded-lg bg-gradient-to-b from-sky-500/20 to-blue-600/30 border border-sky-400/30 flex flex-col items-center justify-center p-1 shadow-md group-hover:scale-105 transition-transform">
-                            <GraduationCap className="w-6 h-6 text-sky-300 mb-0.5" />
-                            <span className="text-[7.5px] font-bold text-sky-200 tracking-tighter uppercase px-0.5 text-center truncate max-w-full">
-                              {file.name.split(' - ')[0]}
-                            </span>
-                          </div>
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img 
+                            src="/icons/course-icon.png" 
+                            alt="Course" 
+                            className="w-13 h-14 object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
+                          />
                         ) : (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img 
@@ -1387,7 +1420,8 @@ export const FinderApp: React.FC<{
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src="/icons/mac-folder-blue.png" alt="Folder" className="w-4 h-4 object-contain shrink-0" />
                           ) : file.type === 'course' ? (
-                            <GraduationCap className="w-4 h-4 text-sky-400 shrink-0" />
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src="/icons/course-icon.png" alt="Course" className="w-4 h-4 object-contain shrink-0" />
                           ) : (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src="/icons/mac-pdf.png" alt="File" className="w-4 h-4 object-contain shrink-0" />
@@ -1430,10 +1464,12 @@ export const FinderApp: React.FC<{
                         className="w-18 h-18 object-contain drop-shadow-lg" 
                       />
                     ) : selectedFile.type === 'course' ? (
-                      <div className="w-16 h-18 rounded-xl bg-gradient-to-b from-sky-500/20 to-blue-600/30 border border-sky-400/40 flex flex-col items-center justify-center p-2 shadow-lg">
-                        <GraduationCap className="w-8 h-8 text-sky-300 mb-1" />
-                        <span className="text-[9px] font-bold text-sky-200 uppercase tracking-tight">COURSE</span>
-                      </div>
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img 
+                        src="/icons/course-icon.png" 
+                        alt="Course" 
+                        className="w-18 h-18 object-contain drop-shadow-lg" 
+                      />
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img 
@@ -1606,6 +1642,26 @@ export const FinderApp: React.FC<{
                       <Download className="w-3.5 h-3.5" />
                       <span>Download PDF</span>
                     </a>
+                  </div>
+                ) : selectedFile.type === 'image' ? (
+                  <div className="space-y-1.5">
+                    <button
+                      onClick={() => onOpenFile && onOpenFile(selectedFile)}
+                      className="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
+                    >
+                      <FolderOpen className="w-3.5 h-3.5" />
+                      <span>Open in Preview</span>
+                    </button>
+                    {selectedFile.url && (
+                      <a
+                        href={selectedFile.url}
+                        download={selectedFile.name}
+                        className="w-full py-1.5 px-3 bg-white/10 hover:bg-white/15 text-white text-xs font-medium rounded-lg flex items-center justify-center space-x-1.5 transition-colors border border-white/10"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Download Diagram</span>
+                      </a>
+                    )}
                   </div>
                 ) : null}
               </div>
